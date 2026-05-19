@@ -40,6 +40,7 @@ OC.L10N.register(
     "Threads" : "Temos",
     "Category" : "Kategorija",
     "Allow" : "Leisti",
+    "Pick a color" : "Pasirinkti spalvą",
     "Change color" : "Keisti spalvą",
     "Account" : "Paskyra",
     "No accounts found" : "Nerasta jokių paskyrų",
