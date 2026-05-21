@@ -80,7 +80,6 @@ class Notifier implements INotifier {
 				$this->setParsedSubjectFromRichSubject($notification);
 
 				return $notification;
-
 			case 'mention':
 				$parameters = $notification->getSubjectParameters();
 				$threadId = $parameters['threadId'] ?? 0;
@@ -108,7 +107,6 @@ class Notifier implements INotifier {
 				$this->setParsedSubjectFromRichSubject($notification);
 
 				return $notification;
-
 			default:
 				throw new UnknownNotificationException();
 		}

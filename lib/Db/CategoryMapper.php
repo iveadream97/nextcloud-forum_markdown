@@ -55,7 +55,6 @@ class CategoryMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
-
 	/**
 	 * @return array<Category>
 	 */
