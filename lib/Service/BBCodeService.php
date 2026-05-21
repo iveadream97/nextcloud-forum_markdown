@@ -349,7 +349,6 @@ class BBCodeService {
 				}
 				// Invalid color - return empty to remove the attribute
 				return '';
-
 			case 'url':
 			case 'href':
 			case 'src':
@@ -365,7 +364,6 @@ class BBCodeService {
 					return $value;
 				}
 				return '';
-
 			default:
 				// For unknown parameters, strip any characters that could break out of HTML attributes
 				// Remove quotes, angle brackets, and other dangerous characters

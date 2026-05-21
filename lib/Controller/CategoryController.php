@@ -24,6 +24,7 @@ use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\PublicPage;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\OCSController;
+use OCP\Files\IRootFolder;
 use OCP\IRequest;
 use OCP\IUserSession;
 use Psr\Log\LoggerInterface;
@@ -40,6 +41,7 @@ class CategoryController extends OCSController {
 		private RoleMapper $roleMapper,
 		private PermissionService $permissionService,
 		private IUserSession $userSession,
+		private IRootFolder $rootFolder,
 		private LoggerInterface $logger,
 	) {
 		parent::__construct($appName, $request);
@@ -100,7 +102,7 @@ class CategoryController extends OCSController {
 				if (!isset($categoriesByHeader[$headerId])) {
 					$categoriesByHeader[$headerId] = [];
 				}
-				$categoryData = $category->jsonSerialize();
+				$categoryData = $this->serializeWithResolvedPath($category);
 				$categoryData['lastActivityAt'] = $lastActivityMap[$category->getId()] ?? null;
 				$categoryData['readAt'] = $readMarkerMap[$category->getId()] ?? null;
 				$categoriesByHeader[$headerId][] = $categoryData;
@@ -143,7 +145,7 @@ class CategoryController extends OCSController {
 
 			$categories = $this->categoryMapper->findByHeaderId($headerId);
 			$filtered = array_filter($categories, fn ($cat) => in_array($cat->getId(), $accessibleCategoryIds, true));
-			return new DataResponse(array_slice(array_values(array_map(fn ($cat) => $cat->jsonSerialize(), $filtered)), $offset, $limit));
+			return new DataResponse(array_slice(array_values(array_map(fn ($cat) => $this->serializeWithResolvedPath($cat), $filtered)), $offset, $limit));
 		} catch (\Exception $e) {
 			$this->logger->error('Error fetching categories by header: ' . $e->getMessage());
 			return new DataResponse(['error' => 'Failed to fetch categories'], Http::STATUS_INTERNAL_SERVER_ERROR);
@@ -164,7 +166,7 @@ class CategoryController extends OCSController {
 	public function show(int $id): DataResponse {
 		try {
 			$category = $this->categoryMapper->find($id);
-			return new DataResponse($category->jsonSerialize());
+			return new DataResponse($this->serializeWithResolvedPath($category));
 		} catch (DoesNotExistException $e) {
 			return new DataResponse(['error' => 'Category not found'], Http::STATUS_NOT_FOUND);
 		} catch (\Exception $e) {
@@ -187,7 +189,7 @@ class CategoryController extends OCSController {
 	public function bySlug(string $slug): DataResponse {
 		try {
 			$category = $this->categoryMapper->findBySlug($slug);
-			return new DataResponse($category->jsonSerialize());
+			return new DataResponse($this->serializeWithResolvedPath($category));
 		} catch (DoesNotExistException $e) {
 			return new DataResponse(['error' => 'Category not found'], Http::STATUS_NOT_FOUND);
 		} catch (\Exception $e) {
@@ -208,6 +210,7 @@ class CategoryController extends OCSController {
 	 * @param string|null $textColor Text color mode ('light' or 'dark')
 	 * @param int|null $parentId Parent category ID (null for top-level categories)
 	 * @param bool $hideChildrenOnCard Whether to hide child categories on the parent card
+	 * @param int|null $attachmentUploadFolderId Optional Nextcloud file ID of the per-category upload folder
 	 * @return DataResponse<Http::STATUS_CREATED, array<string, mixed>, array{}>
 	 *
 	 * 201: Category created
@@ -215,7 +218,7 @@ class CategoryController extends OCSController {
 	#[NoAdminRequired]
 	#[RequirePermission('canEditCategories')]
 	#[ApiRoute(verb: 'POST', url: '/api/categories')]
-	public function create(?int $headerId = null, string $name = '', string $slug = '', ?string $description = null, int $sortOrder = 0, ?string $color = null, ?string $textColor = null, ?int $parentId = null, bool $hideChildrenOnCard = false): DataResponse {
+	public function create(?int $headerId = null, string $name = '', string $slug = '', ?string $description = null, int $sortOrder = 0, ?string $color = null, ?string $textColor = null, ?int $parentId = null, bool $hideChildrenOnCard = false, ?int $attachmentUploadFolderId = null): DataResponse {
 		try {
 			// Validate: either headerId (top-level) or parentId (child) must be set
 			if ($parentId !== null) {
@@ -241,6 +244,7 @@ class CategoryController extends OCSController {
 			$category->setColor($color);
 			$category->setTextColor($textColor);
 			$category->setHideChildrenOnCard($hideChildrenOnCard);
+			$category->setAttachmentUploadFolderId($attachmentUploadFolderId);
 			$category->setThreadCount(0);
 			$category->setPostCount(0);
 			$category->setCreatedAt(time());
@@ -248,7 +252,7 @@ class CategoryController extends OCSController {
 
 			/** @var \OCA\Forum\Db\Category */
 			$createdCategory = $this->categoryMapper->insert($category);
-			return new DataResponse($createdCategory->jsonSerialize(), Http::STATUS_CREATED);
+			return new DataResponse($this->serializeWithResolvedPath($createdCategory), Http::STATUS_CREATED);
 		} catch (\Exception $e) {
 			$this->logger->error('Error creating category: ' . $e->getMessage());
 			return new DataResponse(['error' => 'Failed to create category'], Http::STATUS_INTERNAL_SERVER_ERROR);
@@ -268,6 +272,7 @@ class CategoryController extends OCSController {
 	 * @param string|null $textColor Text color mode ('light' or 'dark')
 	 * @param string|null $parentId Parent category ID ('__unset__' = not provided, null = top-level, int = child)
 	 * @param bool|null $hideChildrenOnCard Whether to hide child categories on the parent card
+	 * @param int|string|null $attachmentUploadFolderId Category-specific upload folder ID ('__unset__' = not provided, null = use default, int = folder file ID)
 	 * @return DataResponse<Http::STATUS_OK, array<string, mixed>, array{}>
 	 *
 	 * 200: Category updated
@@ -275,7 +280,7 @@ class CategoryController extends OCSController {
 	#[NoAdminRequired]
 	#[RequirePermission('canEditCategories')]
 	#[ApiRoute(verb: 'PUT', url: '/api/categories/{id}')]
-	public function update(int $id, ?int $headerId = null, ?string $name = null, ?string $description = null, ?string $slug = null, ?int $sortOrder = null, ?string $color = '__unset__', ?string $textColor = '__unset__', string|int|null $parentId = '__unset__', ?bool $hideChildrenOnCard = null): DataResponse {
+	public function update(int $id, ?int $headerId = null, ?string $name = null, ?string $description = null, ?string $slug = null, ?int $sortOrder = null, ?string $color = '__unset__', ?string $textColor = '__unset__', string|int|null $parentId = '__unset__', ?bool $hideChildrenOnCard = null, string|int|null $attachmentUploadFolderId = '__unset__'): DataResponse {
 		try {
 			$category = $this->categoryMapper->find($id);
 
@@ -339,11 +344,16 @@ class CategoryController extends OCSController {
 			if ($hideChildrenOnCard !== null) {
 				$category->setHideChildrenOnCard($hideChildrenOnCard);
 			}
+			if ($attachmentUploadFolderId !== '__unset__') {
+				$category->setAttachmentUploadFolderId(
+					$attachmentUploadFolderId === null ? null : (int)$attachmentUploadFolderId
+				);
+			}
 			$category->setUpdatedAt(time());
 
 			/** @var \OCA\Forum\Db\Category */
 			$updatedCategory = $this->categoryMapper->update($category);
-			return new DataResponse($updatedCategory->jsonSerialize());
+			return new DataResponse($this->serializeWithResolvedPath($updatedCategory));
 		} catch (DoesNotExistException $e) {
 			return new DataResponse(['error' => 'Category not found'], Http::STATUS_NOT_FOUND);
 		} catch (\Exception $e) {
@@ -599,5 +609,34 @@ class CategoryController extends OCSController {
 			$this->logger->error('Error reordering categories: ' . $e->getMessage());
 			return new DataResponse(['error' => 'Failed to reorder categories'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	/**
+	 * Serialize a Category, populating the transient attachmentUploadResolvedPath
+	 * with the requesting user's relative path for the configured folder ID.
+	 * Returns null path when no folder is set or the user has no access.
+	 *
+	 * @return array<string, mixed>
+	 */
+	private function serializeWithResolvedPath(\OCA\Forum\Db\Category $category): array {
+		$folderId = $category->getAttachmentUploadFolderId();
+		$user = $this->userSession->getUser();
+		if ($folderId !== null && $user !== null) {
+			try {
+				$userFolder = $this->rootFolder->getUserFolder($user->getUID());
+				$nodes = $userFolder->getById($folderId);
+				if (!empty($nodes)) {
+					$relPath = $userFolder->getRelativePath($nodes[0]->getPath());
+					if ($relPath !== null) {
+						// Strip a leading slash so the path is consistently
+						// relative to the user's files root.
+						$category->setAttachmentUploadResolvedPath(ltrim($relPath, '/'));
+					}
+				}
+			} catch (\Exception $e) {
+				$this->logger->debug('Could not resolve attachment upload folder ' . $folderId . ' for user: ' . $e->getMessage());
+			}
+		}
+		return $category->jsonSerialize();
 	}
 }

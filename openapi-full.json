@@ -3113,6 +3113,13 @@
                                         "type": "boolean",
                                         "default": false,
                                         "description": "Whether to hide child categories on the parent card"
+                                    },
+                                    "attachmentUploadFolderId": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "nullable": true,
+                                        "default": null,
+                                        "description": "Optional Nextcloud file ID of the per-category upload folder"
                                     }
                                 }
                             }
@@ -3447,6 +3454,20 @@
                                         "nullable": true,
                                         "default": null,
                                         "description": "Whether to hide child categories on the parent card"
+                                    },
+                                    "attachmentUploadFolderId": {
+                                        "nullable": true,
+                                        "default": "__unset__",
+                                        "description": "Category-specific upload folder ID ('__unset__' = not provided, null = use default, int = folder file ID)",
+                                        "oneOf": [
+                                            {
+                                                "type": "integer",
+                                                "format": "int64"
+                                            },
+                                            {
+                                                "type": "string"
+                                            }
+                                        ]
                                     }
                                 }
                             }

@@ -8,7 +8,6 @@ declare(strict_types=1);
 namespace OCA\Forum\Db;
 
 use JsonSerializable;
-
 use OCP\AppFramework\Db\Entity;
 
 /**
@@ -36,12 +35,21 @@ use OCP\AppFramework\Db\Entity;
  * @method void setTextColor(?string $value)
  * @method bool getHideChildrenOnCard()
  * @method void setHideChildrenOnCard(bool $value)
+ * @method int|null getAttachmentUploadFolderId()
+ * @method void setAttachmentUploadFolderId(?int $value)
  * @method int getCreatedAt()
  * @method void setCreatedAt(int $value)
  * @method int getUpdatedAt()
  * @method void setUpdatedAt(int $value)
  */
 class Category extends Entity implements JsonSerializable {
+	/**
+	 * Transient field: the user-specific path of the attachment upload folder,
+	 * resolved at response time from $attachmentUploadFolderId via the
+	 * requesting user's folder. Not persisted.
+	 */
+	private ?string $attachmentUploadResolvedPath = null;
+
 	protected $headerId;
 	protected $parentId;
 	protected $name;
@@ -51,6 +59,7 @@ class Category extends Entity implements JsonSerializable {
 	protected $color;
 	protected $textColor;
 	protected $hideChildrenOnCard;
+	protected $attachmentUploadFolderId;
 	protected $threadCount;
 	protected $postCount;
 	protected $createdAt;
@@ -67,6 +76,7 @@ class Category extends Entity implements JsonSerializable {
 		$this->addType('color', 'string');
 		$this->addType('textColor', 'string');
 		$this->addType('hideChildrenOnCard', 'boolean');
+		$this->addType('attachmentUploadFolderId', 'integer');
 		$this->addType('threadCount', 'integer');
 		$this->addType('postCount', 'integer');
 		$this->addType('createdAt', 'integer');
@@ -85,10 +95,20 @@ class Category extends Entity implements JsonSerializable {
 			'color' => $this->getColor(),
 			'textColor' => $this->getTextColor(),
 			'hideChildrenOnCard' => (bool)$this->getHideChildrenOnCard(),
+			'attachmentUploadFolderId' => $this->getAttachmentUploadFolderId(),
+			'attachmentUploadResolvedPath' => $this->attachmentUploadResolvedPath,
 			'threadCount' => $this->getThreadCount(),
 			'postCount' => $this->getPostCount(),
 			'createdAt' => $this->getCreatedAt(),
 			'updatedAt' => $this->getUpdatedAt(),
 		];
+	}
+
+	public function setAttachmentUploadResolvedPath(?string $path): void {
+		$this->attachmentUploadResolvedPath = $path;
+	}
+
+	public function getAttachmentUploadResolvedPath(): ?string {
+		return $this->attachmentUploadResolvedPath;
 	}
 }

@@ -63,6 +63,12 @@
         </template>
         {{ strings.uploadFileLabel }}
       </NcActionButton>
+      <NcActionButton @click="handleUploadChooseDestination">
+        <template #icon>
+          <UploadIcon :size="20" />
+        </template>
+        {{ strings.uploadFileChooseDestinationLabel }}
+      </NcActionButton>
     </NcActions>
 
     <NcButton
@@ -220,6 +226,10 @@ export default defineComponent({
       type: String as PropType<'thread' | 'reply' | null>,
       default: null,
     },
+    categoryUploadPath: {
+      type: String as PropType<string | null>,
+      default: null,
+    },
   },
   emits: ['insert'],
   data() {
@@ -238,6 +248,10 @@ export default defineComponent({
         attachmentLabel: t('forum', 'Attachment'),
         pickFileLabel: t('forum', 'Pick file from Nextcloud'),
         uploadFileLabel: t('forum', 'Upload file to Nextcloud'),
+        uploadFileChooseDestinationLabel: t(
+          'forum',
+          'Upload file to Nextcloud (choose destination)',
+        ),
         uploadingFile: t('forum', 'Uploading file …'),
         uploadError: t('forum', 'Upload failed'),
         close: t('forum', 'Close'),
@@ -581,33 +595,121 @@ export default defineComponent({
         return
       }
 
+      const file = await this.pickLocalFile()
+      if (file) {
+        await this.uploadFile(file)
+      }
+    },
+
+    async handleUploadChooseDestination(): Promise<void> {
+      if (!this.textareaRef) {
+        return
+      }
+
       try {
-        // Create a file input element
+        const picker = getFilePickerBuilder(t('forum', 'Select upload destination'))
+          .setMultiSelect(false)
+          .setType(FilePickerType.Choose)
+          .allowDirectories()
+          .build()
+
+        const path = await picker.pick()
+        if (!path) {
+          return
+        }
+        const destination = path.startsWith('/') ? path.substring(1) : path
+
+        const file = await this.pickLocalFile()
+        if (!file) {
+          return
+        }
+
+        await this.uploadFileTo(file, destination, { allowFallback: false })
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          error.message &&
+          !error.message.includes('No nodes selected')
+        ) {
+          console.error('Error picking destination:', error)
+        }
+      }
+    },
+
+    pickLocalFile(): Promise<File | null> {
+      return new Promise((resolve) => {
         const fileInput = document.createElement('input')
         fileInput.type = 'file'
         fileInput.style.display = 'none'
 
-        // Handle file selection
-        fileInput.addEventListener('change', async (event) => {
-          const target = event.target as HTMLInputElement
-          const file = target.files?.[0]
-
-          if (file) {
-            await this.uploadFile(file)
+        let resolved = false
+        const cleanup = () => {
+          if (fileInput.parentNode) {
+            document.body.removeChild(fileInput)
           }
+        }
 
-          document.body.removeChild(fileInput)
+        fileInput.addEventListener('change', (event) => {
+          const target = event.target as HTMLInputElement
+          const file = target.files?.[0] ?? null
+          resolved = true
+          cleanup()
+          resolve(file)
         })
 
-        // Add to DOM and click
+        // If the user cancels there's no reliable event in all browsers,
+        // so resolve with null on focus restored without a change firing.
+        const onFocus = () => {
+          window.removeEventListener('focus', onFocus)
+          setTimeout(() => {
+            if (!resolved) {
+              cleanup()
+              resolve(null)
+            }
+          }, 300)
+        }
+        window.addEventListener('focus', onFocus)
+
         document.body.appendChild(fileInput)
         fileInput.click()
+      })
+    },
+
+    /**
+     * Default upload path: respect the user preference for category-specific
+     * paths when the editor has one wired up, otherwise the user's own dir.
+     * Falls back from the category path to the default on a 403/404.
+     */
+    async uploadFile(file: File): Promise<void> {
+      if (!this.textareaRef) {
+        return
+      }
+
+      try {
+        const prefsResponse = await ocs.get('/user-preferences')
+        const uploadDirectory = prefsResponse.data.upload_directory || 'Forum'
+        const useCategoryPath = prefsResponse.data.use_category_upload_path !== false
+
+        const usingCategoryPath = !!(useCategoryPath && this.categoryUploadPath)
+        const primaryPath = usingCategoryPath
+          ? (this.categoryUploadPath as string)
+          : uploadDirectory
+
+        await this.uploadFileTo(file, primaryPath, {
+          allowFallback: usingCategoryPath ? uploadDirectory : false,
+        })
       } catch (error) {
-        console.error('Error creating file input:', error)
+        console.error('Error uploading file:', error)
+        this.uploadError =
+          error instanceof Error ? error.message : t('forum', 'Failed to upload file')
       }
     },
 
-    async uploadFile(file: File): Promise<void> {
+    async uploadFileTo(
+      file: File,
+      destination: string,
+      options: { allowFallback: string | false },
+    ): Promise<void> {
       if (!this.textareaRef) {
         return
       }
@@ -617,22 +719,16 @@ export default defineComponent({
       this.uploadError = null
       this.uploadDialog = true
 
-      try {
-        // Get upload directory from user preferences
-        const prefsResponse = await ocs.get('/user-preferences')
-        const uploadDirectory = prefsResponse.data.upload_directory || 'Forum'
+      const user = getCurrentUser()
+      if (!user) {
+        this.uploadError = t('forum', 'User not authenticated')
+        return
+      }
 
-        const user = getCurrentUser()
-        if (!user) {
-          throw new Error('User not authenticated')
-        }
-
-        // Ensure directory exists
-        await this.ensureDirectoryExists(user.uid, uploadDirectory)
-
-        // Upload file
-        const davPath = `/remote.php/dav/files/${user.uid}/${uploadDirectory}/${file.name}`
-        const uploadResponse = await webDav.put(davPath, file, {
+      const attempt = async (path: string) => {
+        await this.ensureDirectoryExists(user.uid, path)
+        const davPath = `/remote.php/dav/files/${user.uid}/${path}/${file.name}`
+        return webDav.put(davPath, file, {
           headers: {
             'Content-Type': file.type || 'application/octet-stream',
           },
@@ -642,34 +738,52 @@ export default defineComponent({
             }
           },
         })
+      }
 
-        // Insert attachment BBCode
+      try {
+        let uploadResponse
+        try {
+          uploadResponse = await attempt(destination)
+        } catch (error) {
+          const status =
+            (error as { response?: { status?: number }; status?: number })?.response?.status ??
+            (error as { status?: number })?.status
+          if (
+            options.allowFallback &&
+            (status === 403 || status === 404) &&
+            options.allowFallback !== destination
+          ) {
+            // Silent fallback to the user's own default directory.
+            this.uploadProgress = 0
+            uploadResponse = await attempt(options.allowFallback)
+          } else {
+            throw error
+          }
+        }
+
         const state = getEditorState(this.textareaRef, this.modelValue)
         if (!state) {
           return
         }
 
-        // Prefer the file ID returned by the server; fall back to the path
-        // if for some reason the header is missing. The OC-FileId header is
-        // the federated form (20-char zero-padded numeric ID + instance ID,
-        // e.g. "00000220oco7mnbdyixw") — extract the leading numeric portion.
+        // The OC-FileId header is the federated form (zero-padded numeric ID
+        // + instance ID, e.g. "00000220oco7mnbdyixw") — extract the leading
+        // numeric portion.
         const fileIdHeader =
           uploadResponse?.headers?.['oc-fileid'] ?? uploadResponse?.headers?.['OC-FileId']
         const numericId = fileIdHeader ? String(fileIdHeader).match(/^0*(\d+)/)?.[1] : undefined
-        const fileRef = numericId ?? `${uploadDirectory}/${file.name}`
+        const fileRef = numericId ?? `${destination}/${file.name}`
         const result = insertTextAtSelection(
           editorStateToSelection(state),
           `[attachment]${fileRef}[/attachment]`,
         )
 
-        // Emit the insert event
         this.$emit('insert', {
           text: result.text,
           cursorPos: result.cursorPosition,
           selectedText: '',
         })
 
-        // Focus the editor after insertion
         const editorRef = this.textareaRef
         if (editorRef) {
           this.$nextTick(() => {
@@ -678,7 +792,6 @@ export default defineComponent({
           })
         }
 
-        // Close dialog on success
         this.uploadDialog = false
       } catch (error) {
         console.error('Error uploading file:', error)

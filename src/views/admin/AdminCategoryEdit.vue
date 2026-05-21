@@ -142,6 +142,53 @@
           </div>
         </FormSection>
 
+        <!-- Attachments Section -->
+        <FormSection :title="strings.attachments" :subtitle="strings.attachmentsDesc">
+          <div class="form-grid">
+            <div class="form-group attachment-path-mode">
+              <NcCheckboxRadioSwitch
+                v-model="attachmentPathMode"
+                value="default"
+                name="attachmentPathMode"
+                type="radio"
+              >
+                {{ strings.attachmentPathDefault }}
+              </NcCheckboxRadioSwitch>
+              <p class="help-text muted">{{ strings.attachmentPathDefaultHelp }}</p>
+              <NcCheckboxRadioSwitch
+                v-model="attachmentPathMode"
+                value="category"
+                name="attachmentPathMode"
+                type="radio"
+              >
+                {{ strings.attachmentPathCategory }}
+              </NcCheckboxRadioSwitch>
+            </div>
+
+            <div v-if="attachmentPathMode === 'category'" class="form-group">
+              <label>{{ strings.attachmentPathLabel }}</label>
+              <div class="directory-input-group">
+                <NcTextField
+                  :model-value="attachmentResolvedPath ?? ''"
+                  :placeholder="strings.attachmentPathPlaceholder"
+                  :readonly="true"
+                  class="directory-input"
+                />
+                <NcButton @click="browseCategoryAttachmentPath">
+                  <template #icon>
+                    <FolderIcon :size="20" />
+                  </template>
+                  {{ strings.browse }}
+                </NcButton>
+              </div>
+              <p class="help-text muted">{{ strings.attachmentPathHelp }}</p>
+              <NcNoteCard type="warning" class="attachment-path-warning">
+                {{ strings.attachmentPathWarning }}
+              </NcNoteCard>
+            </div>
+          </div>
+        </FormSection>
+
         <!-- Permissions Section -->
         <FormSection :title="strings.permissions" :subtitle="strings.permissionsDescription">
           <div class="form-grid">
@@ -236,10 +283,12 @@ import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
 import NcSelect from '@nextcloud/vue/components/NcSelect'
 import NcTextField from '@nextcloud/vue/components/NcTextField'
 import NcTextArea from '@nextcloud/vue/components/NcTextArea'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
 import ArrowLeftIcon from '@icons/ArrowLeft.vue'
+import FolderIcon from '@icons/Folder.vue'
 import { ocs } from '@/axios'
 import { t } from '@nextcloud/l10n'
-import { showError } from '@nextcloud/dialogs'
+import { getFilePickerBuilder, FilePickerType, showError } from '@nextcloud/dialogs'
 import { isAdminRole, isModeratorRole, isDefaultRole, isGuestRole } from '@/constants'
 import { useCategories } from '@/composables/useCategories'
 import type { Category, CategoryPerm, CatHeader, Role, Team } from '@/types'
@@ -258,12 +307,14 @@ export default defineComponent({
     NcSelect,
     NcTextField,
     NcTextArea,
+    NcNoteCard,
     PageWrapper,
     AppToolbar,
     FormSection,
     CategoryCard,
     ColorPickerPreset,
     ArrowLeftIcon,
+    FolderIcon,
     PageHeader,
   },
   setup() {
@@ -303,8 +354,11 @@ export default defineComponent({
         color: null as string | null,
         textColor: 'dark' as 'light' | 'dark',
         hideChildrenOnCard: false,
+        attachmentUploadFolderId: null as number | null,
       },
       slugManuallyEdited: false,
+      attachmentPathMode: 'default' as 'default' | 'category',
+      attachmentResolvedPath: null as string | null,
 
       strings: {
         back: t('forum', 'Back'),
@@ -371,6 +425,25 @@ export default defineComponent({
           'forum',
           "When enabled, child categories will not appear as links on this category's card on the home page",
         ),
+        attachments: t('forum', 'Attachments'),
+        attachmentsDesc: t('forum', 'Configure where uploads in this category are stored'),
+        attachmentPathDefault: t('forum', 'Use default attachments path'),
+        attachmentPathDefaultHelp: t(
+          'forum',
+          "Uploads in this category land in each user's personal upload directory",
+        ),
+        attachmentPathCategory: t('forum', 'Use category-specific attachment path'),
+        attachmentPathLabel: t('forum', 'Category attachments folder'),
+        attachmentPathPlaceholder: t('forum', 'Pick a folder …'),
+        attachmentPathHelp: t(
+          'forum',
+          'The shown path is resolved to your own files. Other admins will see the same folder at the location it appears in their own files.',
+        ),
+        attachmentPathWarning: t(
+          'forum',
+          'This folder must be accessible to every user who uploads in this category. If a user cannot write to it, their upload will fall back to their personal default path.',
+        ),
+        browse: t('forum', 'Browse'),
       },
     }
   },
@@ -539,6 +612,12 @@ export default defineComponent({
         this.slugManuallyEdited = false
       }
     },
+    attachmentPathMode(newVal: 'default' | 'category') {
+      if (newVal === 'default') {
+        this.formData.attachmentUploadFolderId = null
+        this.attachmentResolvedPath = null
+      }
+    },
   },
   created() {
     this.refresh()
@@ -663,6 +742,9 @@ export default defineComponent({
       this.formData.color = category.color || null
       this.formData.textColor = category.textColor || 'dark'
       this.formData.hideChildrenOnCard = category.hideChildrenOnCard || false
+      this.formData.attachmentUploadFolderId = category.attachmentUploadFolderId ?? null
+      this.attachmentResolvedPath = category.attachmentUploadResolvedPath ?? null
+      this.attachmentPathMode = category.attachmentUploadFolderId !== null ? 'category' : 'default'
 
       // When editing, don't track manual slug edits (slug is pre-populated from DB)
       this.slugManuallyEdited = false
@@ -752,6 +834,34 @@ export default defineComponent({
       }
     },
 
+    async browseCategoryAttachmentPath(): Promise<void> {
+      try {
+        const picker = getFilePickerBuilder(t('forum', 'Pick a folder'))
+          .setMultiSelect(false)
+          .setType(FilePickerType.Choose)
+          .allowDirectories()
+          .build()
+
+        const nodes = await picker.pickNodes()
+        const node = Array.isArray(nodes) ? nodes[0] : undefined
+        const fileId = node?.fileid
+        if (!fileId) {
+          return
+        }
+
+        this.formData.attachmentUploadFolderId = fileId
+        // Use the picker's view of this folder as the readable label until
+        // the server re-resolves it on the next save/reload.
+        const rawPath =
+          (node as { path?: string }).path ?? (node as { source?: string }).source ?? ''
+        this.attachmentResolvedPath = rawPath.startsWith('/') ? rawPath.substring(1) : rawPath
+      } catch (e) {
+        if (e instanceof Error && !e.message.includes('No nodes selected')) {
+          console.error('Failed to pick attachment folder', e)
+        }
+      }
+    },
+
     async submitForm(): Promise<void> {
       if (!this.canSubmit) return
 
@@ -766,6 +876,8 @@ export default defineComponent({
           color: this.formData.color || null,
           textColor: this.formData.color ? this.formData.textColor : null,
           hideChildrenOnCard: this.formData.hideChildrenOnCard,
+          attachmentUploadFolderId:
+            this.attachmentPathMode === 'category' ? this.formData.attachmentUploadFolderId : null,
         }
 
         // Set parent based on selection type
@@ -932,6 +1044,24 @@ export default defineComponent({
           flex: 1;
         }
       }
+
+      .directory-input-group {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+
+        .directory-input {
+          flex: 1;
+        }
+      }
+
+      .attachment-path-warning {
+        margin-top: 8px;
+      }
+    }
+
+    .attachment-path-mode {
+      gap: 12px;
     }
 
     .design-section {

@@ -20,6 +20,7 @@ use OCA\Forum\Db\ThreadMapper;
 use OCA\Forum\Service\PermissionService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http;
+use OCP\Files\IRootFolder;
 use OCP\IRequest;
 use OCP\IUser;
 use OCP\IUserSession;
@@ -45,6 +46,8 @@ class CategoryControllerTest extends TestCase {
 	private PermissionService $permissionService;
 	/** @var IUserSession&MockObject */
 	private IUserSession $userSession;
+	/** @var IRootFolder&MockObject */
+	private IRootFolder $rootFolder;
 	/** @var LoggerInterface&MockObject */
 	private LoggerInterface $logger;
 	/** @var IRequest&MockObject */
@@ -66,6 +69,7 @@ class CategoryControllerTest extends TestCase {
 				return range(1, 100);
 			});
 		$this->userSession = $this->createMock(IUserSession::class);
+		$this->rootFolder = $this->createMock(IRootFolder::class);
 		$this->logger = $this->createMock(LoggerInterface::class);
 
 		$this->controller = new CategoryController(
@@ -79,6 +83,7 @@ class CategoryControllerTest extends TestCase {
 			$this->roleMapper,
 			$this->permissionService,
 			$this->userSession,
+			$this->rootFolder,
 			$this->logger
 		);
 	}
@@ -366,6 +371,55 @@ class CategoryControllerTest extends TestCase {
 		$this->assertEquals($slug, $data['slug']);
 		$this->assertEquals($description, $data['description']);
 		$this->assertEquals($sortOrder, $data['sortOrder']);
+	}
+
+	public function testCreatePersistsAttachmentUploadFolderId(): void {
+		$createdCategory = $this->createCategory(1, 1, 'New');
+		$this->categoryMapper->expects($this->once())
+			->method('insert')
+			->willReturnCallback(function ($category) use ($createdCategory) {
+				$this->assertSame(42, $category->getAttachmentUploadFolderId());
+				$createdCategory->setAttachmentUploadFolderId(42);
+				return $createdCategory;
+			});
+
+		$response = $this->controller->create(1, 'New', 'new', null, 0, null, null, null, false, 42);
+
+		$this->assertEquals(Http::STATUS_CREATED, $response->getStatus());
+		$this->assertEquals(42, $response->getData()['attachmentUploadFolderId']);
+	}
+
+	public function testUpdateLeavesAttachmentUploadFolderIdUnchangedWhenOmitted(): void {
+		$category = $this->createCategory(1, 1, 'Cat');
+		$category->setAttachmentUploadFolderId(99);
+
+		$this->categoryMapper->expects($this->once())->method('find')->willReturn($category);
+		$this->categoryMapper->expects($this->once())
+			->method('update')
+			->willReturnCallback(function ($updated) {
+				$this->assertSame(99, $updated->getAttachmentUploadFolderId());
+				return $updated;
+			});
+
+		// Don't pass the param at all -> defaults to '__unset__' sentinel
+		$response = $this->controller->update(1, null, 'New Name');
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
+	}
+
+	public function testUpdateClearsAttachmentUploadFolderIdWhenNullPassed(): void {
+		$category = $this->createCategory(1, 1, 'Cat');
+		$category->setAttachmentUploadFolderId(99);
+
+		$this->categoryMapper->expects($this->once())->method('find')->willReturn($category);
+		$this->categoryMapper->expects($this->once())
+			->method('update')
+			->willReturnCallback(function ($updated) {
+				$this->assertNull($updated->getAttachmentUploadFolderId());
+				return $updated;
+			});
+
+		$response = $this->controller->update(1, null, null, null, null, null, '__unset__', '__unset__', '__unset__', null, null);
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 	}
 
 	public function testUpdateCategorySuccessfully(): void {

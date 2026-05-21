@@ -29,6 +29,9 @@ class UserPreferencesService {
 	/** Preference key for hiding edit history from others */
 	public const PREF_HIDE_EDIT_HISTORY = 'hide_edit_history';
 
+	/** Preference key for honouring category-specific attachment upload paths */
+	public const PREF_USE_CATEGORY_UPLOAD_PATH = 'use_category_upload_path';
+
 	/** @var array<string, mixed> Default preference values */
 	private const DEFAULTS = [
 		self::PREF_AUTO_SUBSCRIBE_CREATED_THREADS => true,
@@ -36,6 +39,7 @@ class UserPreferencesService {
 		self::PREF_UPLOAD_DIRECTORY => 'Forum',
 		self::PREF_SIGNATURE => '',
 		self::PREF_HIDE_EDIT_HISTORY => false,
+		self::PREF_USE_CATEGORY_UPLOAD_PATH => true,
 	];
 
 	/** @var array<string> List of valid preference keys */
@@ -45,6 +49,7 @@ class UserPreferencesService {
 		self::PREF_UPLOAD_DIRECTORY,
 		self::PREF_SIGNATURE,
 		self::PREF_HIDE_EDIT_HISTORY,
+		self::PREF_USE_CATEGORY_UPLOAD_PATH,
 	];
 
 	/** @var array<string> Keys stored in forum_users table instead of config */

@@ -49,6 +49,7 @@
         <ThreadCreateForm
           ref="createForm"
           :draft-status="draftStatus"
+          :category-upload-path="category?.attachmentUploadResolvedPath ?? null"
           @submit="handleCreateThread"
           @cancel="goBack"
           @update:title="handleTitleChange"

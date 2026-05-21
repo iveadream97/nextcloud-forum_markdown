@@ -27,6 +27,7 @@
         :disabled="submitting"
         min-height="8rem"
         editor-context="thread"
+        :category-upload-path="categoryUploadPath"
         @keydown.ctrl.enter="submitThread"
         @keydown.meta.enter="submitThread"
         ref="editor"
@@ -88,6 +89,10 @@ export default defineComponent({
   props: {
     draftStatus: {
       type: String as PropType<DraftStatus>,
+      default: null,
+    },
+    categoryUploadPath: {
+      type: String as PropType<string | null>,
       default: null,
     },
   },

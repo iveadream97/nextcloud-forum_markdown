@@ -18,6 +18,7 @@
         :disabled="submitting"
         min-height="6.125rem"
         editor-context="reply"
+        :category-upload-path="categoryUploadPath"
         @keydown.ctrl.enter="submitReply"
         @keydown.meta.enter="submitReply"
         ref="editor"
@@ -40,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, type PropType } from 'vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
 import SendIcon from '@icons/Send.vue'
@@ -60,6 +61,12 @@ export default defineComponent({
     BBCodeEditor,
   },
   emits: ['submit', 'cancel'],
+  props: {
+    categoryUploadPath: {
+      type: String as PropType<string | null>,
+      default: null,
+    },
+  },
   setup() {
     const { userId, displayName } = useCurrentUser()
     const { isGuest, guestDisplayName } = useGuestSession()

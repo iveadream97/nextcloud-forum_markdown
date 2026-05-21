@@ -42,7 +42,7 @@ class UserPreferencesServiceTest extends TestCase {
 		$userId = 'user1';
 
 		// Only config-based preferences (signature is from forum_users)
-		$this->config->expects($this->exactly(4))
+		$this->config->expects($this->exactly(5))
 			->method('getUserValue')
 			->willReturnCallback(function ($uid, $appId, $key, $default) use ($userId) {
 				$this->assertEquals($userId, $uid);
@@ -53,6 +53,7 @@ class UserPreferencesServiceTest extends TestCase {
 					UserPreferencesService::PREF_AUTO_SUBSCRIBE_REPLIED_THREADS => 'false',
 					UserPreferencesService::PREF_UPLOAD_DIRECTORY => 'Forum',
 					UserPreferencesService::PREF_HIDE_EDIT_HISTORY => 'false',
+					UserPreferencesService::PREF_USE_CATEGORY_UPLOAD_PATH => 'true',
 					default => $default,
 				};
 			});
@@ -60,12 +61,13 @@ class UserPreferencesServiceTest extends TestCase {
 		$result = $this->service->getAllPreferences($userId);
 
 		$this->assertIsArray($result);
-		$this->assertCount(5, $result);
+		$this->assertCount(6, $result);
 		$this->assertTrue($result[UserPreferencesService::PREF_AUTO_SUBSCRIBE_CREATED_THREADS]);
 		$this->assertFalse($result[UserPreferencesService::PREF_AUTO_SUBSCRIBE_REPLIED_THREADS]);
 		$this->assertEquals('Forum', $result[UserPreferencesService::PREF_UPLOAD_DIRECTORY]);
 		$this->assertEquals('', $result[UserPreferencesService::PREF_SIGNATURE]);
 		$this->assertFalse($result[UserPreferencesService::PREF_HIDE_EDIT_HISTORY]);
+		$this->assertTrue($result[UserPreferencesService::PREF_USE_CATEGORY_UPLOAD_PATH]);
 	}
 
 	public function testGetPreferenceReturnsCorrectValue(): void {
@@ -148,7 +150,7 @@ class UserPreferencesServiceTest extends TestCase {
 				}
 			});
 
-		$this->config->expects($this->exactly(4))
+		$this->config->expects($this->exactly(5))
 			->method('getUserValue')
 			->willReturnCallback(function ($uid, $appId, $key, $default) use ($userId) {
 				$this->assertEquals($userId, $uid);
@@ -159,6 +161,7 @@ class UserPreferencesServiceTest extends TestCase {
 					UserPreferencesService::PREF_AUTO_SUBSCRIBE_REPLIED_THREADS => 'false',
 					UserPreferencesService::PREF_UPLOAD_DIRECTORY => 'Documents',
 					UserPreferencesService::PREF_HIDE_EDIT_HISTORY => 'false',
+					UserPreferencesService::PREF_USE_CATEGORY_UPLOAD_PATH => 'true',
 					default => $default,
 				};
 			});
@@ -166,12 +169,13 @@ class UserPreferencesServiceTest extends TestCase {
 		$result = $this->service->updatePreferences($userId, $preferences);
 
 		$this->assertIsArray($result);
-		$this->assertCount(5, $result);
+		$this->assertCount(6, $result);
 		$this->assertFalse($result[UserPreferencesService::PREF_AUTO_SUBSCRIBE_CREATED_THREADS]);
 		$this->assertFalse($result[UserPreferencesService::PREF_AUTO_SUBSCRIBE_REPLIED_THREADS]);
 		$this->assertEquals('Documents', $result[UserPreferencesService::PREF_UPLOAD_DIRECTORY]);
 		$this->assertEquals('', $result[UserPreferencesService::PREF_SIGNATURE]);
 		$this->assertFalse($result[UserPreferencesService::PREF_HIDE_EDIT_HISTORY]);
+		$this->assertTrue($result[UserPreferencesService::PREF_USE_CATEGORY_UPLOAD_PATH]);
 	}
 
 	public function testUpdatePreferencesThrowsExceptionForInvalidKey(): void {

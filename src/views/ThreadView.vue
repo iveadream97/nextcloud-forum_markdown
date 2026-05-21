@@ -206,6 +206,7 @@
           :can-moderate-category="canModerate"
           :can-reply="canReply"
           :current-page="currentPage"
+          :category-upload-path="categoryUploadPath"
           @reply="handleReply"
           @update="handleUpdate"
           @delete="handleDelete"
@@ -324,6 +325,7 @@
           (!thread.isLocked || canModerate)
         "
         ref="replyForm"
+        :category-upload-path="categoryUploadPath"
         @submit="handleSubmitReply"
         @cancel="handleCancelReply"
       />
@@ -371,7 +373,7 @@ import ReplyIcon from '@icons/Reply.vue'
 import PencilIcon from '@icons/Pencil.vue'
 import CheckIcon from '@icons/Check.vue'
 import FolderMoveIcon from '@icons/FolderMove.vue'
-import type { Post } from '@/types'
+import type { Category, Post } from '@/types'
 import { ocs } from '@/axios'
 import { t, n } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
@@ -446,6 +448,7 @@ export default defineComponent({
       editedTitle: '',
       isSavingTitle: false,
       showMoveDialog: false,
+      categoryUploadPath: null as string | null,
 
       strings: {
         back: t('forum', 'Back'),
@@ -582,6 +585,8 @@ export default defineComponent({
         await this.fetchPosts(initialPage)
         // Check permissions
         await this.checkPermissions()
+        // Fetch category-specific attachment upload path (resolved for this user)
+        await this.fetchCategoryUploadPath()
       } catch (e) {
         console.error('Failed to refresh', e)
         this.error = (e as Error).message || t('forum', 'An unexpected error occurred')
@@ -598,6 +603,20 @@ export default defineComponent({
         ])
         this.canModerate = canModerate
         this.canReply = canReply
+      }
+    },
+
+    async fetchCategoryUploadPath(): Promise<void> {
+      if (!this.thread?.categoryId) {
+        this.categoryUploadPath = null
+        return
+      }
+      try {
+        const resp = await ocs.get<Category>(`/categories/${this.thread.categoryId}`)
+        this.categoryUploadPath = resp.data.attachmentUploadResolvedPath ?? null
+      } catch (e) {
+        // Non-fatal: just skip the per-category path
+        this.categoryUploadPath = null
       }
     },
 

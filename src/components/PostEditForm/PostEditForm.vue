@@ -7,6 +7,7 @@
       :disabled="submitting"
       min-height="8rem"
       editor-context="reply"
+      :category-upload-path="categoryUploadPath"
       @keydown.ctrl.enter="submitEdit"
       @keydown.meta.enter="submitEdit"
       ref="editor"
@@ -27,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, type PropType } from 'vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
 import BBCodeEditor from '@/components/BBCodeEditor'
@@ -44,6 +45,10 @@ export default defineComponent({
     initialContent: {
       type: String,
       required: true,
+    },
+    categoryUploadPath: {
+      type: String as PropType<string | null>,
+      default: null,
     },
   },
   emits: ['submit', 'cancel'],

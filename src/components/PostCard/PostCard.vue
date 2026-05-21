@@ -76,6 +76,7 @@
         v-if="isEditing"
         ref="editForm"
         :initial-content="post.contentRaw"
+        :category-upload-path="categoryUploadPath"
         @submit="handleEditSubmit"
         @cancel="cancelEdit"
       />
@@ -181,6 +182,10 @@ export default defineComponent({
     currentPage: {
       type: Number,
       default: 1,
+    },
+    categoryUploadPath: {
+      type: String as PropType<string | null>,
+      default: null,
     },
   },
   emits: ['reply', 'edit', 'delete', 'update', 'reassigned'],

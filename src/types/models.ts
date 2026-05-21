@@ -14,6 +14,8 @@ export interface Category {
   color: string | null
   textColor: 'light' | 'dark' | null
   hideChildrenOnCard: boolean
+  attachmentUploadFolderId: number | null
+  attachmentUploadResolvedPath?: string | null
   threadCount: number
   postCount: number
   createdAt: number

@@ -11,6 +11,7 @@
       :textarea-ref="contenteditableElement"
       :model-value="modelValue"
       :editor-context="editorContext"
+      :category-upload-path="categoryUploadPath"
       @insert="handleBBCodeInsert"
     />
     <NcRichContenteditable
@@ -98,6 +99,10 @@ export default defineComponent({
     },
     editorContext: {
       type: String as PropType<'thread' | 'reply' | null>,
+      default: null,
+    },
+    categoryUploadPath: {
+      type: String as PropType<string | null>,
       default: null,
     },
   },

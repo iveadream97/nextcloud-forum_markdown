@@ -78,6 +78,13 @@
             </div>
             <p class="preference-hint">{{ strings.uploadDirectoryHint }}</p>
           </div>
+
+          <div class="preference-item">
+            <NcCheckboxRadioSwitch v-model="formData.use_category_upload_path">
+              {{ strings.useCategoryUploadPathLabel }}
+            </NcCheckboxRadioSwitch>
+            <p class="preference-hint">{{ strings.useCategoryUploadPathHint }}</p>
+          </div>
         </div>
 
         <!-- Signature Section -->
@@ -159,6 +166,7 @@ interface UserPreferences {
   upload_directory: string
   signature: string
   hide_edit_history: boolean
+  use_category_upload_path: boolean
 }
 
 export default defineComponent({
@@ -197,6 +205,7 @@ export default defineComponent({
         upload_directory: 'Forum',
         signature: '',
         hide_edit_history: false,
+        use_category_upload_path: true,
       } as UserPreferences,
       formData: {
         auto_subscribe_created_threads: true,
@@ -204,6 +213,7 @@ export default defineComponent({
         upload_directory: 'Forum',
         signature: '',
         hide_edit_history: false,
+        use_category_upload_path: true,
       } as UserPreferences,
 
       strings: {
@@ -231,6 +241,11 @@ export default defineComponent({
         uploadDirectoryHint: t(
           'forum',
           'Files attached to threads or replies will be uploaded to this directory in your Nextcloud files',
+        ),
+        useCategoryUploadPathLabel: t('forum', 'Use category-specific paths when available'),
+        useCategoryUploadPathHint: t(
+          'forum',
+          'When a category has its own attachments folder configured, uploads in that category go there instead of your default upload directory',
         ),
         browse: t('forum', 'Browse'),
         save: t('forum', 'Save'),
