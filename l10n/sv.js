@@ -100,6 +100,7 @@ OC.L10N.register(
     "Enabled" : "Aktiverad",
     "Permissions" : "Behörigheter",
     "Preview" : "Förhandsgranskning",
+    "Attachments" : "Bilagor",
     "Move up" : "Flytta upp",
     "Move down" : "Flytta ner",
     "Last 7 days" : "Senaste 7 dagarna",

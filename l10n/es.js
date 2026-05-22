@@ -173,6 +173,7 @@ OC.L10N.register(
     "Enabled" : "Habilitado",
     "Permissions" : "Permisos",
     "Preview" : "Vista previa",
+    "Attachments" : "Adjuntos",
     "Move up" : "Mover hacia arriba",
     "Move down" : "Mover hacia abajo",
     "Last 7 days" : "Últimos 7 días",

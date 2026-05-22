@@ -97,6 +97,7 @@ OC.L10N.register(
     "Enabled" : "Zapnuté",
     "Permissions" : "Oprávnenia",
     "Preview" : "Náhľad",
+    "Attachments" : "Prílohy",
     "Move up" : "Presunúť hore",
     "Move down" : "Presunúť dole",
     "Last 7 days" : "Posledných 7 dní",

@@ -125,6 +125,7 @@ OC.L10N.register(
     "Enter category name" : "Saisissez le nom de la catégorie",
     "Permissions" : "Autorisations",
     "Preview" : "Prévisualiser",
+    "Attachments" : "Pièces jointes",
     "Move up" : "Déplacer vers le haut",
     "Move down" : "Déplacer vers le bas",
     "Last 7 days" : "7 derniers jours",

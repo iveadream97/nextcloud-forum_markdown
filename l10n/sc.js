@@ -71,6 +71,7 @@ OC.L10N.register(
     "Description" : "Descritzione",
     "Enabled" : "Ativadu",
     "Permissions" : "Permissos",
+    "Attachments" : "Alligongiados",
     "Move up" : "Tràmuda fache a susu",
     "Move down" : "Tràmuda fache a bàsciu",
     "Last 7 days" : "Ùrtimas 7 dies",

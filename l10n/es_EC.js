@@ -276,6 +276,7 @@ OC.L10N.register(
     "Enter category description (optional)" : "Ingresa la descripción de la categoría (opcional)",
     "Permissions" : "Permisos",
     "Preview" : "Previsualizar",
+    "Attachments" : "Adjuntos",
     "Manage forum categories and organization" : "Gestionar categorías y organización del foro",
     "Error loading categories" : "Error al cargar categorías",
     "No categories in this header" : "No hay categorías en este encabezado",

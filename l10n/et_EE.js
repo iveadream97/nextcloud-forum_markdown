@@ -379,6 +379,7 @@ OC.L10N.register(
     "Enter category description (optional)" : "Sisesta kategooria kirjeldus (pole kohustuslik)",
     "Permissions" : "Õigused",
     "Preview" : "Eelvaade",
+    "Attachments" : "Manused",
     "Manage forum categories and organization" : "Foorumi kategooriate ja süsteemi haldus",
     "Error loading categories" : "Viga kategooriate laadimisel",
     "No categories in this header" : "Selles päises pole kategooriaid",

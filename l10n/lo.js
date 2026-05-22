@@ -103,6 +103,7 @@ OC.L10N.register(
     "Enter category name" : "ປ້ອນຊື່ໝວດໝູ່",
     "Permissions" : "ການອະນຸຍາດ",
     "Preview" : "ເບິ່ງຕົວຢ່າງ",
+    "Attachments" : "ໄຟລ໌ແນບ",
     "Move up" : "Move up",
     "Move down" : "Move down",
     "Last 7 days" : "7 ມື້ຜ່ານມາ",

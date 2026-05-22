@@ -348,6 +348,7 @@ OC.L10N.register(
     "Enter category description (optional)" : "Enter category description (optional)",
     "Permissions" : "Ruhusa",
     "Preview" : "Mwonekano wa awali",
+    "Attachments" : "Viambatanisho",
     "Manage forum categories and organization" : "Manage forum categories and organization",
     "Error loading categories" : "Error loading categories",
     "No categories in this header" : "No categories in this header",

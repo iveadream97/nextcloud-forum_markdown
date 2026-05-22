@@ -82,6 +82,7 @@ OC.L10N.register(
     "Enabled" : "활성화",
     "Permissions" : "권한",
     "Preview" : "미리 보기",
+    "Attachments" : "첨부파일",
     "Move up" : "위로 이동",
     "Move down" : "아래로 이동",
     "Last 7 days" : "지난 7일",

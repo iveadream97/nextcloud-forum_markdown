@@ -91,6 +91,7 @@ OC.L10N.register(
     "Enabled" : "Ativado",
     "If enabled, BBCode tags inside this tag will also be parsed" : "Se estiver ativada, as etiquetas BBCode dentro desta etiqueta serão também analisadas.",
     "Preview" : "Pré-visualizar",
+    "Attachments" : "Anexos",
     "Move up" : "Mover para cima",
     "Move down" : "Mover para baixo",
     "Last 7 days" : "Últimos 7 dias",

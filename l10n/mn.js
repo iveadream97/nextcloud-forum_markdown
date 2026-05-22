@@ -87,6 +87,7 @@ OC.L10N.register(
     "Enabled" : "Идэвхижүүлэх",
     "Permissions" : "Зөвшөөрлүүд",
     "Preview" : "—à–∞–ª–≥–∞—Ö",
+    "Attachments" : "–•–∞–≤—Å—Ä–∞–ª—Ç",
     "Move up" : "Дээшлүүлэх",
     "Move down" : "Доошлуулах",
     "Last 7 days" : "Сүүлийн 7 хоног",

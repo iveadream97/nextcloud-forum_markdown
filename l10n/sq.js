@@ -55,6 +55,7 @@ OC.L10N.register(
     "Enabled" : "E aktivizuar",
     "Permissions" : "Lejet",
     "Preview" : "Parapamje ",
+    "Attachments" : "Bashkangjitjet",
     "All time" : "Gjithë kohës",
     "General settings" : "Opsjonet e Pergjithshme",
     "Access control" : "Kontrolli i aksesit",

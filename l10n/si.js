@@ -30,6 +30,7 @@ OC.L10N.register(
     "Description" : "විස්තරය",
     "Enabled" : "සබල කර ඇත",
     "Preview" : "පෙරදසුන",
+    "Attachments" : "ඇමිණුම්",
     "Owner" : "හිමිකරු",
     "Actions" : "ක්‍රියාමාර්ග"
 },

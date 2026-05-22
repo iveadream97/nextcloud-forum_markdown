@@ -81,6 +81,7 @@ OC.L10N.register(
     "Enabled" : "Virkt",
     "Permissions" : "Heimildir",
     "Preview" : "Forskoðun",
+    "Attachments" : "Viðhengi",
     "Move up" : "Færa upp",
     "Move down" : "Færa niður",
     "Last 7 days" : "Síðustu 7 daga",

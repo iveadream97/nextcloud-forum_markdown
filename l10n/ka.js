@@ -76,6 +76,7 @@ OC.L10N.register(
     "Enabled" : "Enabled",
     "Permissions" : "Permissions",
     "Preview" : "Preview",
+    "Attachments" : "Attachments",
     "Move up" : "Move up",
     "Move down" : "Move down",
     "Last 7 days" : "Last 7 days",

@@ -97,6 +97,7 @@ OC.L10N.register(
     "Enabled" : "已启用",
     "Permissions" : "权限",
     "Preview" : "预览",
+    "Attachments" : "附件",
     "Move up" : "上移",
     "Move down" : "下移",
     "Last 7 days" : "过去 7 天",

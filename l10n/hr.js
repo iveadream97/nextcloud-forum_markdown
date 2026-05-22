@@ -95,6 +95,7 @@ OC.L10N.register(
     "Enabled" : "Omogućeno",
     "Permissions" : "Dopuštenja",
     "Preview" : "Pretpregled",
+    "Attachments" : "Privici",
     "Move up" : "Premjesti gore",
     "Move down" : "Premjesti dolje",
     "Last 7 days" : "Zadnjih 7 dana",

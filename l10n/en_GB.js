@@ -463,6 +463,7 @@ OC.L10N.register(
     "Preview" : "Preview",
     "Hide subcategories on category card" : "Hide subcategories on category card",
     "When enabled, child categories will not appear as links on this category's card on the home page" : "When enabled, child categories will not appear as links on this category's card on the home page",
+    "Attachments" : "Attachments",
     "Failed to save category" : "Failed to save category",
     "Manage forum categories and organization" : "Manage forum categories and organization",
     "Error loading categories" : "Error loading categories",

@@ -275,6 +275,7 @@ OC.L10N.register(
     "Enabled" : "Включено",
     "Permissions" : "Права",
     "Preview" : "Предварительный просмотр",
+    "Attachments" : "Вложения",
     "Move up" : "Переместить выше",
     "Move down" : "Переместить ниже",
     "New threads" : "Новые темы",

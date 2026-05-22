@@ -71,6 +71,7 @@ OC.L10N.register(
     "Description" : "Mô tả",
     "Enabled" : "Đá kích hoạt",
     "Preview" : "Xem trước",
+    "Attachments" : "Tệp đính kèm",
     "Move up" : "Di chuyển lên",
     "Move down" : "Di chuyển xuống",
     "Last 7 days" : "7 ngày trước",

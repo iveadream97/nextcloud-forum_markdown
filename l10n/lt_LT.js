@@ -115,6 +115,7 @@ OC.L10N.register(
     "Dark text" : "Tamsus tekstas",
     "Light text" : "Šviesus tekstas",
     "Preview" : "Peržiūra",
+    "Attachments" : "Priedai",
     "Error loading categories" : "Klaida įkeliant kategorijas",
     "Delete category" : "Ištrinti kategoriją",
     "Move up" : "Pakelti",

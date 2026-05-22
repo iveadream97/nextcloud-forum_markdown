@@ -45,6 +45,7 @@ OC.L10N.register(
     "Description" : "คำอธิบาย",
     "Enabled" : "เปิดใช้งาน",
     "Preview" : "ตัวอย่าง",
+    "Attachments" : "ไฟล์แนบ",
     "Last 7 days" : "ภายใน 7 วัน",
     "Appearance" : "ลักษณะที่ปรากฏ",
     "Settings saved" : "บันทึกการตั้งค่าแล้ว",

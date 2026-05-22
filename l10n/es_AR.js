@@ -50,6 +50,7 @@ OC.L10N.register(
     "Enabled" : "Habilitado",
     "Permissions" : "Permisos",
     "Preview" : "Vista previa",
+    "Attachments" : "Adjuntos",
     "All time" : "Tiempo total",
     "General settings" : "Configuraciones generales",
     "Access control" : "Control de acceso",

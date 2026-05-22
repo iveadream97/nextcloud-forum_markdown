@@ -95,6 +95,7 @@ OC.L10N.register(
     "Enabled" : "Gaituta",
     "Permissions" : "Baimenak",
     "Preview" : "Aurrebista",
+    "Attachments" : "Eranskinak",
     "Move up" : "Eraman gora",
     "Move down" : "Eraman behera",
     "Last 7 days" : "Azken 7 egunetan",

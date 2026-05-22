@@ -58,6 +58,7 @@ OC.L10N.register(
     "Description" : "Tavsif",
     "Permissions" : "Ruxsatnomalar",
     "Preview" : "Ko‘rib chiqish",
+    "Attachments" : "Qo'shimchalar",
     "Last 7 days" : "Oxirgi 7 kun",
     "Appearance" : "Tashqi ko'rinish",
     "Access control" : "Kirishni boshqarish",

@@ -93,6 +93,7 @@ OC.L10N.register(
     "Enabled" : "有効",
     "Permissions" : "アクセス権限",
     "Preview" : "プレビュー",
+    "Attachments" : "添付ファイル",
     "Move up" : "上に移動",
     "Move down" : "下に移動",
     "Last 7 days" : "7日以内",

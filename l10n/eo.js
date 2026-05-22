@@ -53,6 +53,7 @@ OC.L10N.register(
     "Disable" : "Malŝalti",
     "Description" : "Priskribo",
     "Preview" : "Antaŭvidi",
+    "Attachments" : "Dosieraj aldonaĵoj",
     "Move down" : "Movi malsupren",
     "Last 7 days" : "Lastaj 7 tagoj",
     "Access control" : "Alirkontrolo",

@@ -98,6 +98,7 @@ OC.L10N.register(
     "Enabled" : "Käytössä",
     "Permissions" : "Oikeudet",
     "Preview" : "Esikatselu",
+    "Attachments" : "Liitteet",
     "Move up" : "Siirrä ylös",
     "Move down" : "Siirrä alas",
     "Last 7 days" : "Edelliset 7 päivää",

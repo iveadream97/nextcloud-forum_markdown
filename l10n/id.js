@@ -352,6 +352,7 @@ OC.L10N.register(
     "Enter category description (optional)" : "Masukkan deskripsi kategori (opsional)",
     "Permissions" : "Izin",
     "Preview" : "Pratinjau",
+    "Attachments" : "Lampiran",
     "Manage forum categories and organization" : "Kelola kategori forum dan pengorganisasiannya",
     "Error loading categories" : "Kesalahan saat memuat kategori",
     "No categories in this header" : "Tidak ada kategori dalam header ini",

@@ -85,6 +85,7 @@ OC.L10N.register(
     "Enabled" : "فعال شده",
     "Permissions" : "مجوزها",
     "Preview" : "پیش‌نمایش",
+    "Attachments" : "پیوست ها",
     "Move up" : "حرکت به بالا",
     "Move down" : "حرکت به پایین",
     "Last 7 days" : "۷ روز گذشته.",

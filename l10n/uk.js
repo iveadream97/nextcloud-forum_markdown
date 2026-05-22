@@ -101,6 +101,7 @@ OC.L10N.register(
     "Enter category name" : "Введіть назву категорії",
     "Permissions" : "Дозволи ",
     "Preview" : "Попередній перегляд",
+    "Attachments" : "Вкладення",
     "Move up" : "Пересунуту догори",
     "Move down" : "Пересунути вниз",
     "Last 7 days" : "За останні 7 днів",

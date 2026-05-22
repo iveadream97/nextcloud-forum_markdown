@@ -68,6 +68,7 @@ OC.L10N.register(
     "Enabled" : "Activat",
     "Permissions" : "Permisiuni",
     "Preview" : "Previzualizare",
+    "Attachments" : "Atașamente ",
     "Move up" : "Mută înainte",
     "Move down" : "Mută în jos",
     "Last 7 days" : "Ultimele 7 zile",

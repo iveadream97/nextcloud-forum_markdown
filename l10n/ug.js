@@ -351,6 +351,7 @@ OC.L10N.register(
     "Enter category description (optional)" : "تۈر چۈشەندۈرمىسىنى كىرگۈزۈڭ (خالىغانچە)",
     "Permissions" : "ئىجازەت",
     "Preview" : "ئالدىن كۆرۈش",
+    "Attachments" : "قوشۇمچە ھۆججەتلەر",
     "Manage forum categories and organization" : "مۇنبەر تۈرلىرى ۋە تەشكىللىنىشىنى باشقۇرۇش",
     "Error loading categories" : "تۈرلەرنى يۈكلەشتە خاتالىق كۆرۈلدى",
     "No categories in this header" : "بۇ ماۋزۇدا كاتېگورىيە يوق",

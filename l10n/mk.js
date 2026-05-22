@@ -71,6 +71,7 @@ OC.L10N.register(
     "Description" : "Опис",
     "Enabled" : "Овозможено",
     "Permissions" : "Дозволи",
+    "Attachments" : "Прилози",
     "Move up" : "Помести горе",
     "Move down" : "Помести доле",
     "Last 7 days" : "Предходни 7 дена",

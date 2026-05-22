@@ -370,6 +370,7 @@ OC.L10N.register(
     "Enter category description (optional)" : "Introduza a descrición da categoría (opcional)",
     "Permissions" : "Permisos",
     "Preview" : "Vista previa",
+    "Attachments" : "Anexos",
     "Manage forum categories and organization" : "Xestionar as categorías e a organización do foro",
     "Error loading categories" : "Produciuse un erro ao cargar as categorías",
     "No categories in this header" : "Non hai ningunha categoría neste fío",

@@ -45,6 +45,7 @@ OC.L10N.register(
     "Disable" : "Sens",
     "Description" : "Aglam",
     "Enabled" : "Yermed",
+    "Attachments" : "Ticeqqufin",
     "Last 7 days" : "7 n wussan yezrin",
     "Appearance" : "Udem",
     "Newest first" : "Imaynuten d imezwura",

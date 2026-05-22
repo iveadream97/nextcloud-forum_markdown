@@ -103,6 +103,7 @@ OC.L10N.register(
     "Enabled" : "Ingeschakeld",
     "Permissions" : "Rechten",
     "Preview" : "Voorbeeld",
+    "Attachments" : "Bijlagen",
     "Move up" : "Verplaats naar boven",
     "Move down" : "Lager zetten",
     "Management dashboard" : "Management dashboard",

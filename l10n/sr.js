@@ -98,6 +98,7 @@ OC.L10N.register(
     "Enabled" : "укључено",
     "Permissions" : "Дозволе",
     "Preview" : "Преглед",
+    "Attachments" : "Прилози",
     "Move up" : "Помери нагоре",
     "Move down" : "Помери надоле",
     "Last 7 days" : "Последњих 7 дана",

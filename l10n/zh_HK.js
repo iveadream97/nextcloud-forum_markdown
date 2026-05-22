@@ -463,6 +463,7 @@ OC.L10N.register(
     "Preview" : "預覽",
     "Hide subcategories on category card" : "在分類卡片上隱藏子分類",
     "When enabled, child categories will not appear as links on this category's card on the home page" : "啟用後，子分類將不會在首頁此分類卡片上以連結形式顯示",
+    "Attachments" : "附件",
     "Failed to save category" : "儲存類別失敗",
     "Manage forum categories and organization" : "管理論壇分類及架構",
     "Error loading categories" : "載入分類時發生錯誤",

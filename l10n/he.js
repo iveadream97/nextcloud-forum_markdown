@@ -325,6 +325,7 @@ OC.L10N.register(
     "Enabled" : "מופעל",
     "Permissions" : "הרשאות",
     "Preview" : "תצוגה מקדימה",
+    "Attachments" : "קבצים מצורפים",
     "Move down" : "להוריד למטה",
     "General settings" : "הגדרות כלליות",
     "Appearance" : "מראה",

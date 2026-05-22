@@ -100,6 +100,7 @@ OC.L10N.register(
     "Enabled" : "Engedélyezve",
     "Permissions" : "Jogosultságok",
     "Preview" : "Előnézet",
+    "Attachments" : "Mellékletek",
     "Move up" : "Mozgatás fel",
     "Move down" : "Mozgatás le",
     "Last 7 days" : "Előző 7 nap",

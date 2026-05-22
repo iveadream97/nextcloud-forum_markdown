@@ -463,6 +463,7 @@ OC.L10N.register(
     "Preview" : "Réamhamharc",
     "Hide subcategories on category card" : "Folaigh fochatagóirí ar chárta catagóire",
     "When enabled, child categories will not appear as links on this category's card on the home page" : "Nuair a bheidh sé cumasaithe, ní bheidh catagóirí linbh le feiceáil mar naisc ar chárta na catagóire seo ar an leathanach baile.",
+    "Attachments" : "Ceangaltáin",
     "Failed to save category" : "Theip ar an gcatagóir a shábháil",
     "Manage forum categories and organization" : "Bainistigh catagóirí agus eagrú an fhóraim",
     "Error loading categories" : "Earráid ag luchtú catagóirí",

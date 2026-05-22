@@ -101,6 +101,7 @@ OC.L10N.register(
     "Enabled" : "Włączone",
     "Permissions" : "Uprawnienia",
     "Preview" : "Podgląd",
+    "Attachments" : "Załączniki",
     "Move up" : "Przenieś wyżej",
     "Move down" : "Przenieś niżej",
     "Last 7 days" : "Ostatnie 7 dni",
