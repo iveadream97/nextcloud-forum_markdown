@@ -32,6 +32,9 @@ class UserPreferencesService {
 	/** Preference key for honouring category-specific attachment upload paths */
 	public const PREF_USE_CATEGORY_UPLOAD_PATH = 'use_category_upload_path';
 
+	/** Preference key for upload routing behavior — 'configured' or 'prompt' */
+	public const PREF_UPLOAD_BEHAVIOR = 'upload_behavior';
+
 	/** @var array<string, mixed> Default preference values */
 	private const DEFAULTS = [
 		self::PREF_AUTO_SUBSCRIBE_CREATED_THREADS => true,
@@ -40,6 +43,7 @@ class UserPreferencesService {
 		self::PREF_SIGNATURE => '',
 		self::PREF_HIDE_EDIT_HISTORY => false,
 		self::PREF_USE_CATEGORY_UPLOAD_PATH => true,
+		self::PREF_UPLOAD_BEHAVIOR => 'configured',
 	];
 
 	/** @var array<string> List of valid preference keys */
@@ -50,6 +54,7 @@ class UserPreferencesService {
 		self::PREF_SIGNATURE,
 		self::PREF_HIDE_EDIT_HISTORY,
 		self::PREF_USE_CATEGORY_UPLOAD_PATH,
+		self::PREF_UPLOAD_BEHAVIOR,
 	];
 
 	/** @var array<string> Keys stored in forum_users table instead of config */

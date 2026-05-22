@@ -57,7 +57,7 @@
         </template>
         {{ strings.pickFileLabel }}
       </NcActionButton>
-      <NcActionButton @click="handleUpload">
+      <NcActionButton v-if="uploadBehavior !== 'prompt'" @click="handleUpload">
         <template #icon>
           <UploadIcon :size="20" />
         </template>
@@ -181,7 +181,8 @@ import HelpCircleIcon from '@icons/HelpCircle.vue'
 import DotsHorizontalIcon from '@icons/DotsHorizontal.vue'
 import BBCodeHelpDialog from '@/components/BBCodeHelpDialog'
 import { t } from '@nextcloud/l10n'
-import { webDav, ocs } from '@/axios'
+import { webDav } from '@/axios'
+import { useUserPreferences } from '@/composables/useUserPreferences'
 
 interface BBCodeButton {
   tag: string
@@ -232,6 +233,15 @@ export default defineComponent({
     },
   },
   emits: ['insert'],
+  setup() {
+    const { preferences, uploadBehavior, fetchUserPreferences } = useUserPreferences()
+    // Prime the shared cache; safe to call from many places (deduped internally).
+    fetchUserPreferences()
+    return {
+      userPrefs: preferences,
+      uploadBehavior,
+    }
+  },
   data() {
     return {
       showHelp: false,
@@ -606,34 +616,17 @@ export default defineComponent({
         return
       }
 
-      try {
-        const picker = getFilePickerBuilder(t('forum', 'Select upload destination'))
-          .setMultiSelect(false)
-          .setType(FilePickerType.Choose)
-          .allowDirectories()
-          .build()
-
-        const path = await picker.pick()
-        if (!path) {
-          return
-        }
-        const destination = path.startsWith('/') ? path.substring(1) : path
-
-        const file = await this.pickLocalFile()
-        if (!file) {
-          return
-        }
-
-        await this.uploadFileTo(file, destination, { allowFallback: false })
-      } catch (error) {
-        if (
-          error instanceof Error &&
-          error.message &&
-          !error.message.includes('No nodes selected')
-        ) {
-          console.error('Error picking destination:', error)
-        }
+      const destination = await this.promptForUploadDestination()
+      if (!destination) {
+        return
       }
+
+      const file = await this.pickLocalFile()
+      if (!file) {
+        return
+      }
+
+      await this.uploadFileTo(file, destination, { allowFallback: false })
     },
 
     pickLocalFile(): Promise<File | null> {
@@ -679,6 +672,10 @@ export default defineComponent({
      * Default upload path: respect the user preference for category-specific
      * paths when the editor has one wired up, otherwise the user's own dir.
      * Falls back from the category path to the default on a 403/404.
+     *
+     * When the user prefers `upload_behavior: 'prompt'`, this opens the
+     * destination picker before each upload — the picked path is used as
+     * destination with no fallback (the user picked it explicitly).
      */
     async uploadFile(file: File): Promise<void> {
       if (!this.textareaRef) {
@@ -686,22 +683,56 @@ export default defineComponent({
       }
 
       try {
-        const prefsResponse = await ocs.get('/user-preferences')
-        const uploadDirectory = prefsResponse.data.upload_directory || 'Forum'
-        const useCategoryPath = prefsResponse.data.use_category_upload_path !== false
+        // Ensure the shared prefs cache is populated before reading from it.
+        await useUserPreferences().fetchUserPreferences()
+        const { upload_directory, use_category_upload_path, upload_behavior } = this.userPrefs
 
-        const usingCategoryPath = !!(useCategoryPath && this.categoryUploadPath)
+        if (upload_behavior === 'prompt') {
+          const destination = await this.promptForUploadDestination()
+          if (!destination) {
+            return
+          }
+          await this.uploadFileTo(file, destination, { allowFallback: false })
+          return
+        }
+
+        const usingCategoryPath = !!(use_category_upload_path && this.categoryUploadPath)
         const primaryPath = usingCategoryPath
           ? (this.categoryUploadPath as string)
-          : uploadDirectory
+          : upload_directory
 
         await this.uploadFileTo(file, primaryPath, {
-          allowFallback: usingCategoryPath ? uploadDirectory : false,
+          allowFallback: usingCategoryPath ? upload_directory : false,
         })
       } catch (error) {
         console.error('Error uploading file:', error)
         this.uploadError =
           error instanceof Error ? error.message : t('forum', 'Failed to upload file')
+      }
+    },
+
+    async promptForUploadDestination(): Promise<string | null> {
+      try {
+        const picker = getFilePickerBuilder(t('forum', 'Select upload destination'))
+          .setMultiSelect(false)
+          .setType(FilePickerType.Choose)
+          .allowDirectories()
+          .build()
+
+        const path = await picker.pick()
+        if (!path) {
+          return null
+        }
+        return path.startsWith('/') ? path.substring(1) : path
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          error.message &&
+          !error.message.includes('No nodes selected')
+        ) {
+          console.error('Error picking destination:', error)
+        }
+        return null
       }
     },
 

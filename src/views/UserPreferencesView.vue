@@ -62,29 +62,52 @@
           <p class="section-description muted">{{ strings.filesDesc }}</p>
 
           <div class="preference-item">
-            <label class="preference-label">{{ strings.uploadDirectoryLabel }}</label>
-            <div class="directory-input-group">
-              <NcTextField
-                v-model="formData.upload_directory"
-                :placeholder="strings.uploadDirectoryLabel"
-                class="directory-input"
-              />
-              <NcButton @click="browseDirectory">
-                <template #icon>
-                  <FolderIcon :size="20" />
-                </template>
-                {{ strings.browse }}
-              </NcButton>
-            </div>
-            <p class="preference-hint">{{ strings.uploadDirectoryHint }}</p>
+            <label class="preference-label">{{ strings.uploadBehaviorLabel }}</label>
+            <NcCheckboxRadioSwitch
+              v-model="formData.upload_behavior"
+              value="configured"
+              name="upload_behavior"
+              type="radio"
+            >
+              {{ strings.uploadBehaviorConfigured }}
+            </NcCheckboxRadioSwitch>
+            <NcCheckboxRadioSwitch
+              v-model="formData.upload_behavior"
+              value="prompt"
+              name="upload_behavior"
+              type="radio"
+            >
+              {{ strings.uploadBehaviorPrompt }}
+            </NcCheckboxRadioSwitch>
+            <p class="preference-hint">{{ strings.uploadBehaviorHint }}</p>
           </div>
 
-          <div class="preference-item">
-            <NcCheckboxRadioSwitch v-model="formData.use_category_upload_path">
-              {{ strings.useCategoryUploadPathLabel }}
-            </NcCheckboxRadioSwitch>
-            <p class="preference-hint">{{ strings.useCategoryUploadPathHint }}</p>
-          </div>
+          <template v-if="formData.upload_behavior === 'configured'">
+            <div class="preference-item">
+              <label class="preference-label">{{ strings.uploadDirectoryLabel }}</label>
+              <div class="directory-input-group">
+                <NcTextField
+                  v-model="formData.upload_directory"
+                  :placeholder="strings.uploadDirectoryLabel"
+                  class="directory-input"
+                />
+                <NcButton @click="browseDirectory">
+                  <template #icon>
+                    <FolderIcon :size="20" />
+                  </template>
+                  {{ strings.browse }}
+                </NcButton>
+              </div>
+              <p class="preference-hint">{{ strings.uploadDirectoryHint }}</p>
+            </div>
+
+            <div class="preference-item">
+              <NcCheckboxRadioSwitch v-model="formData.use_category_upload_path">
+                {{ strings.useCategoryUploadPathLabel }}
+              </NcCheckboxRadioSwitch>
+              <p class="preference-hint">{{ strings.useCategoryUploadPathHint }}</p>
+            </div>
+          </template>
         </div>
 
         <!-- Signature Section -->
@@ -155,19 +178,10 @@ import BBCodeEditor from '@/components/BBCodeEditor'
 import ArrowLeftIcon from '@icons/ArrowLeft.vue'
 import CheckIcon from '@icons/Check.vue'
 import FolderIcon from '@icons/Folder.vue'
-import { ocs } from '@/axios'
 import { t } from '@nextcloud/l10n'
 import { getFilePickerBuilder, FilePickerType } from '@nextcloud/dialogs'
 import { usePublicSettings } from '@/composables/usePublicSettings'
-
-interface UserPreferences {
-  auto_subscribe_created_threads: boolean
-  auto_subscribe_replied_threads: boolean
-  upload_directory: string
-  signature: string
-  hide_edit_history: boolean
-  use_category_upload_path: boolean
-}
+import { useUserPreferences, type UserPreferences } from '@/composables/useUserPreferences'
 
 export default defineComponent({
   name: 'UserPreferencesView',
@@ -189,8 +203,12 @@ export default defineComponent({
     const { settings: publicSettings, fetchPublicSettings } = usePublicSettings()
     fetchPublicSettings()
 
+    const { fetchUserPreferences, savePreferences: savePreferencesToServer } = useUserPreferences()
+
     return {
       publicSettings,
+      fetchUserPreferences,
+      savePreferencesToServer,
     }
   },
   data() {
@@ -206,6 +224,7 @@ export default defineComponent({
         signature: '',
         hide_edit_history: false,
         use_category_upload_path: true,
+        upload_behavior: 'configured',
       } as UserPreferences,
       formData: {
         auto_subscribe_created_threads: true,
@@ -214,6 +233,7 @@ export default defineComponent({
         signature: '',
         hide_edit_history: false,
         use_category_upload_path: true,
+        upload_behavior: 'configured',
       } as UserPreferences,
 
       strings: {
@@ -241,6 +261,13 @@ export default defineComponent({
         uploadDirectoryHint: t(
           'forum',
           'Files attached to threads or replies will be uploaded to this directory in your Nextcloud files',
+        ),
+        uploadBehaviorLabel: t('forum', 'Upload behavior'),
+        uploadBehaviorConfigured: t('forum', 'Always upload to chosen directory'),
+        uploadBehaviorPrompt: t('forum', 'Always prompt for upload location'),
+        uploadBehaviorHint: t(
+          'forum',
+          'Whether attachment uploads use your configured directory or ask you to pick a destination each time',
         ),
         useCategoryUploadPathLabel: t('forum', 'Use category-specific paths when available'),
         useCategoryUploadPathHint: t(
@@ -300,9 +327,11 @@ export default defineComponent({
         this.loading = true
         this.error = null
 
-        const response = await ocs.get<UserPreferences>('/user-preferences')
-        this.originalData = { ...response.data }
-        this.formData = { ...response.data }
+        const prefs = await this.fetchUserPreferences(true)
+        if (prefs) {
+          this.originalData = { ...prefs }
+          this.formData = { ...prefs }
+        }
       } catch (e) {
         console.error('Failed to load preferences', e)
         this.error = (e as Error).message || t('forum', 'An unexpected error occurred')
@@ -316,9 +345,13 @@ export default defineComponent({
         this.saving = true
         this.saveSuccess = false
 
-        await ocs.put('/user-preferences', this.formData)
-
-        this.originalData = { ...this.formData }
+        const saved = await this.savePreferencesToServer(this.formData)
+        if (saved) {
+          this.originalData = { ...saved }
+          this.formData = { ...saved }
+        } else {
+          this.originalData = { ...this.formData }
+        }
         this.saveSuccess = true
 
         // Hide success message after 3 seconds
