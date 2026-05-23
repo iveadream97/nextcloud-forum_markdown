@@ -97,6 +97,7 @@ OC.L10N.register(
     "Enabled" : "Habilitat",
     "Permissions" : "Permisos",
     "Preview" : "Previsualitza",
+    "Attachments" : "Adjunts",
     "Move up" : "Mou amunt",
     "Move down" : "Mou avall",
     "Last 7 days" : "Darrers 7 dies",

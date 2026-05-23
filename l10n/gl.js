@@ -320,7 +320,6 @@ OC.L10N.register(
     "Files" : "Ficheiros",
     "Configure file upload settings" : "Configurar os axustes de envío de ficheiros",
     "Upload directory" : "Directorio ao que enviar",
-    "Files attached to threads or replies will be uploaded to this directory in your Nextcloud files" : "Os ficheiros anexos a fíos ou respostas enviaranse a este directorio nos seus ficheiros de Nextcloud",
     "Browse" : "Examinar",
     "Preferences saved" : "Preferencias gardadas",
     "Signature" : "Sinatura",

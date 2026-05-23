@@ -391,7 +391,6 @@ OC.L10N.register(
     "Files" : "檔案",
     "Configure file upload settings" : "配置檔案上傳設定",
     "Upload directory" : "上載目錄",
-    "Files attached to threads or replies will be uploaded to this directory in your Nextcloud files" : "討論串或回覆附加的檔案會上載到你 Nextcloud 檔案中的此目錄",
     "Browse" : "瀏覽",
     "Preferences saved" : "偏好設定已儲存",
     "Signature" : "簽名",

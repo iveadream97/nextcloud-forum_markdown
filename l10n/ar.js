@@ -89,6 +89,7 @@ OC.L10N.register(
     "Enabled" : "مُفعّل",
     "Permissions" : "الصلاحيّات",
     "Preview" : "معاينة",
+    "Attachments" : "المُرفَقات",
     "Move up" : "نقلٌ للأعلي",
     "Move down" : "نقلٌ للأسفل",
     "Last 7 days" : "آخر 7 أيام",

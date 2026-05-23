@@ -106,6 +106,7 @@ OC.L10N.register(
     "Enter category name" : "Увядзіце назву катэгорыі",
     "Permissions" : "Дазволы",
     "Preview" : "Перадпрагляд",
+    "Attachments" : "Далучэнні",
     "Move up" : "Перамясціць уверх",
     "Move down" : "Перамясціць уніз",
     "Last 7 days" : "Апошнія 7 дзён",

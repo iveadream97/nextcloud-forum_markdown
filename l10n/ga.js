@@ -391,7 +391,6 @@ OC.L10N.register(
     "Files" : "Comhaid",
     "Configure file upload settings" : "Cumraigh socruithe uaslódála comhad",
     "Upload directory" : "Uaslódáil eolaire",
-    "Files attached to threads or replies will be uploaded to this directory in your Nextcloud files" : "Uaslódálfar comhaid atá ceangailte le snáitheanna nó freagraí chuig an eolaire seo i do chomhaid Nextcloud",
     "Browse" : "Brabhsáil",
     "Preferences saved" : "Roghanna sábháilte",
     "Signature" : "Sínithe",

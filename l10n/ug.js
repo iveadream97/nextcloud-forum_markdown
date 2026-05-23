@@ -301,7 +301,6 @@ OC.L10N.register(
     "Files" : "ھۆججەتلەر",
     "Configure file upload settings" : "ھۆججەت يۈكلەش تەڭشەكلىرىنى تەڭشەڭ",
     "Upload directory" : "مۇندەرىجىنى يۈكلەش",
-    "Files attached to threads or replies will be uploaded to this directory in your Nextcloud files" : "تېمىلارغا ياكى جاۋابلارغا قوشۇلغان ھۆججەتلەر Nextcloud ھۆججەتلىرىڭىزدىكى بۇ مۇندەرىجىگە يۈكلىنىدۇ.",
     "Browse" : "زىيارەت قىل",
     "Preferences saved" : "تەڭشەكلەر ساقلاندى",
     "Signature" : "ئىمزا",

@@ -391,7 +391,6 @@ OC.L10N.register(
     "Files" : "Files",
     "Configure file upload settings" : "Configure file upload settings",
     "Upload directory" : "Upload directory",
-    "Files attached to threads or replies will be uploaded to this directory in your Nextcloud files" : "Files attached to threads or replies will be uploaded to this directory in your Nextcloud files",
     "Browse" : "Browse",
     "Preferences saved" : "Preferences saved",
     "Signature" : "Signature",

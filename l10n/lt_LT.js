@@ -29,6 +29,7 @@ OC.L10N.register(
     "Log in" : "Prisijungti",
     "Hello world!" : "Sveikas, pasauli!",
     "Code" : "Kodas",
+    "Quote" : "Citata",
     "Font size" : "Šrifto dydis",
     "Font color" : "Šrifto spalva",
     "List" : "Sąrašas",

@@ -89,6 +89,7 @@ OC.L10N.register(
     "Enabled" : "Включено",
     "Permissions" : "Права",
     "Preview" : "Визуализация",
+    "Attachments" : "Прикачени файлове",
     "Move up" : "Преместване нагоре",
     "Move down" : "Преместване  надолу",
     "Last 7 days" : "Последните 7 дни",

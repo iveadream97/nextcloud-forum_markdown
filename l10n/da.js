@@ -89,6 +89,7 @@ OC.L10N.register(
     "Enabled" : "Aktiveret",
     "Permissions" : "Rettigheder",
     "Preview" : "Forhåndsvisning",
+    "Attachments" : "Vedhæftede filer",
     "Move up" : "Flyt op",
     "Move down" : "Flyt ned",
     "Last 7 days" : "Sidste 7 dage",

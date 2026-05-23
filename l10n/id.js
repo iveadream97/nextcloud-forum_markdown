@@ -302,7 +302,6 @@ OC.L10N.register(
     "Files" : "File",
     "Configure file upload settings" : "Konfigurasikan pengaturan unggah file",
     "Upload directory" : "Direktori unggah",
-    "Files attached to threads or replies will be uploaded to this directory in your Nextcloud files" : "File yang dilampirkan ke utas atau balasan akan diunggah ke direktori ini di file Nextcloud Anda",
     "Browse" : "Telusuri",
     "Preferences saved" : "Preferensi disimpan",
     "Signature" : "Tanda tangan",

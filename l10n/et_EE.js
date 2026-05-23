@@ -329,7 +329,6 @@ OC.L10N.register(
     "Files" : "Failid",
     "Configure file upload settings" : "Seadista failide üleslaadimise seadistusi",
     "Upload directory" : "Üleslaadimiskaust",
-    "Files attached to threads or replies will be uploaded to this directory in your Nextcloud files" : "Jutulõngade või vastuste manustena lisatud failid laaditakse sellesse kausta, mida näed oma Nextcloudi failirakenduses",
     "Browse" : "Sirvi",
     "Preferences saved" : "Eelistused on salvestatud",
     "Signature" : "Allkiri",
