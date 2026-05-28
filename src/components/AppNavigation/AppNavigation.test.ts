@@ -241,12 +241,34 @@ describe('AppNavigation', () => {
   describe('category headers', () => {
     it('should render category headers', async () => {
       mockCategoryHeaders.value = [
-        { id: 1, name: 'General', categories: [] },
-        { id: 2, name: 'Support', categories: [] },
+        {
+          id: 1,
+          name: 'General',
+          categories: [{ id: 10, name: 'Discussion', slug: 'discussion' }],
+        },
+        {
+          id: 2,
+          name: 'Support',
+          categories: [{ id: 20, name: 'Help', slug: 'help' }],
+        },
       ]
       const wrapper = await mountAndWait()
       expect(wrapper.find('[data-name="General"]').exists()).toBe(true)
       expect(wrapper.find('[data-name="Support"]').exists()).toBe(true)
+    })
+
+    it('should hide headers with no accessible categories', async () => {
+      mockCategoryHeaders.value = [
+        { id: 1, name: 'Empty', categories: [] },
+        {
+          id: 2,
+          name: 'Populated',
+          categories: [{ id: 10, name: 'Discussion', slug: 'discussion' }],
+        },
+      ]
+      const wrapper = await mountAndWait()
+      expect(wrapper.find('[data-name="Empty"]').exists()).toBe(false)
+      expect(wrapper.find('[data-name="Populated"]').exists()).toBe(true)
     })
 
     it('should render categories under open headers', async () => {
@@ -449,7 +471,13 @@ describe('AppNavigation', () => {
 
   describe('navigation state persistence', () => {
     it('should save header toggle state to localStorage', async () => {
-      mockCategoryHeaders.value = [{ id: 1, name: 'General', categories: [] }]
+      mockCategoryHeaders.value = [
+        {
+          id: 1,
+          name: 'General',
+          categories: [{ id: 10, name: 'Discussion', slug: 'discussion' }],
+        },
+      ]
       const wrapper = await mountAndWait()
 
       // Toggle the header

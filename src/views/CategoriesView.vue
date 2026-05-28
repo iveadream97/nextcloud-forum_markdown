@@ -28,7 +28,7 @@
 
       <!-- Empty state -->
       <NcEmptyContent
-        v-else-if="categoryHeaders.length === 0"
+        v-else-if="visibleHeaders.length === 0"
         :title="strings.emptyTitle"
         :description="strings.emptyDesc"
         class="mt-16"
@@ -36,11 +36,10 @@
 
       <!-- Categories list -->
       <section v-else class="mt-16">
-        <div v-for="header in categoryHeaders" :key="header.id" class="header-section">
+        <div v-for="header in visibleHeaders" :key="header.id" class="header-section">
           <h3 class="header-title">{{ header.name }}</h3>
 
-          <!-- Categories grid -->
-          <div v-if="header.categories && header.categories.length > 0" class="categories-grid">
+          <div class="categories-grid">
             <CategoryCard
               v-for="category in header.categories"
               :key="category.id"
@@ -51,9 +50,6 @@
               @click="navigateToCategory(category)"
             />
           </div>
-
-          <!-- Empty state for header with no categories -->
-          <p v-else class="no-categories muted">{{ strings.noCategories }}</p>
         </div>
       </section>
     </div>
@@ -113,7 +109,6 @@ export default defineComponent({
         loading: t('forum', 'Loading …'),
         emptyTitle: t('forum', 'No categories yet'),
         emptyDesc: t('forum', 'Categories will appear here once they are created.'),
-        noCategories: t('forum', 'No categories in this section'),
       },
     }
   },
@@ -123,6 +118,9 @@ export default defineComponent({
     },
     forumSubtitle(): string {
       return this.publicSettings?.subtitle || t('forum', 'Welcome to the forum!')
+    },
+    visibleHeaders() {
+      return this.categoryHeaders.filter((header) => (header.categories?.length ?? 0) > 0)
     },
   },
   async created() {
@@ -195,12 +193,6 @@ export default defineComponent({
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 16px;
-  }
-
-  .no-categories {
-    padding: 24px;
-    text-align: center;
-    font-style: italic;
   }
 }
 </style>

@@ -41,7 +41,7 @@
 
           <!-- Category headers as collapsible submenus -->
           <NcAppNavigationItem
-            v-for="header in categoryHeaders"
+            v-for="header in visibleHeaders"
             :key="`header-${header.id}`"
             :name="header.name"
             @click="navigateToFirstCategory(header)"
@@ -381,6 +381,9 @@ export default defineComponent({
     loginUrl(): string {
       const returnUrl = window.location.pathname + window.location.search + window.location.hash
       return generateUrl('/login?redirect_url={url}', { url: returnUrl })
+    },
+    visibleHeaders(): typeof this.categoryHeaders {
+      return this.categoryHeaders.filter((header) => (header.categories?.length ?? 0) > 0)
     },
     activeCategoryIds(): Set<number> {
       const ids = new Set<number>()

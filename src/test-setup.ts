@@ -136,13 +136,17 @@ vi.mock('@nextcloud/vue/components/NcNoteCard', () => ({
   },
 }))
 
-// Mock @/axios globally — covers ocs (REST) and webDav (file ops)
+// Mock @/axios globally — covers ocs (REST) and webDav (file ops).
+// Default ocs responses return an empty { data: {} } so components that
+// trigger unrelated requests (e.g. via shared composables) don't crash
+// when a test only mocks its own endpoint. Tests can override per-call
+// with mockResolvedValueOnce.
 vi.mock('@/axios', () => ({
   ocs: {
-    get: vi.fn(),
-    post: vi.fn(),
-    put: vi.fn(),
-    delete: vi.fn(),
+    get: vi.fn().mockResolvedValue({ data: {} }),
+    post: vi.fn().mockResolvedValue({ data: {} }),
+    put: vi.fn().mockResolvedValue({ data: {} }),
+    delete: vi.fn().mockResolvedValue({ data: {} }),
   },
   webDav: {
     put: vi.fn(),
