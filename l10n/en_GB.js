@@ -281,7 +281,6 @@ OC.L10N.register(
     "Failed to load bookmarks" : "Failed to load bookmarks",
     "No categories yet" : "No categories yet",
     "Categories will appear here once they are created." : "Categories will appear here once they are created.",
-    "No categories in this section" : "No categories in this section",
     "Category not found" : "Category not found",
     "The category you are looking for does not exist or has been removed." : "The category you are looking for does not exist or has been removed.",
     "Back to categories" : "Back to categories",

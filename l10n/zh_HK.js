@@ -281,7 +281,6 @@ OC.L10N.register(
     "Failed to load bookmarks" : "載入書籤失敗",
     "No categories yet" : "尚未有任何分類",
     "Categories will appear here once they are created." : "當建立分類後，會在此顯示。",
-    "No categories in this section" : "此部分尚未有分類",
     "Category not found" : "找不到該分類",
     "The category you are looking for does not exist or has been removed." : "你尋找的分類不存在或已被移除。",
     "Back to categories" : "返回分類列表",

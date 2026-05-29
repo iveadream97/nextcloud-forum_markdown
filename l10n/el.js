@@ -217,7 +217,6 @@ OC.L10N.register(
     "Failed to load bookmarks" : "Αποτυχία φόρτωσης σελιδοδεικτών",
     "No categories yet" : "Δεν υπάρχουν κατηγορίες ακόμα",
     "Categories will appear here once they are created." : "Οι κατηγορίες θα εμφανιστούν εδώ μόλις δημιουργηθούν.",
-    "No categories in this section" : "Δεν υπάρχουν κατηγορίες σε αυτή την ενότητα",
     "Category not found" : "Η κατηγορία δεν βρέθηκε",
     "The category you are looking for does not exist or has been removed." : "Η κατηγορία που αναζητάτε δεν υπάρχει ή έχει αφαιρεθεί.",
     "Back to categories" : "Επιστροφή στις κατηγορίες",

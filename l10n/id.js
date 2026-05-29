@@ -200,7 +200,6 @@ OC.L10N.register(
     "Failed to load bookmarks" : "Gagal memuat markah",
     "No categories yet" : "Belum ada kategori",
     "Categories will appear here once they are created." : "Kategori akan muncul di sini setelah dibuat.",
-    "No categories in this section" : "Tidak ada kategori di bagian ini",
     "Category not found" : "Kategori tidak ditemukan",
     "The category you are looking for does not exist or has been removed." : "Kategori yang Anda cari tidak ada atau telah dihapus.",
     "Back to categories" : "Kembali ke kategori",

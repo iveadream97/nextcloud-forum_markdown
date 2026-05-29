@@ -159,7 +159,6 @@ OC.L10N.register(
     "An unexpected error occurred" : "Ocurrió un error inesperado",
     "No categories yet" : "Aún no hay categorías",
     "Categories will appear here once they are created." : "Las categorías aparecerán aquí una vez que se creen.",
-    "No categories in this section" : "No hay categorías en esta sección",
     "Category not found" : "Categoría no encontrada",
     "The category you are looking for does not exist or has been removed." : "La categoría que buscas no existe o ha sido eliminada.",
     "Back to categories" : "Volver a categorías",

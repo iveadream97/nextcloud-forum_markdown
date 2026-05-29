@@ -284,7 +284,6 @@ OC.L10N.register(
     "Failed to load bookmarks" : "Theip ar leabharmharcanna a lódáil",
     "No categories yet" : "Gan aon chatagóirí fós",
     "Categories will appear here once they are created." : "Beidh catagóirí le feiceáil anseo a luaithe a bheidh siad cruthaithe.",
-    "No categories in this section" : "Níl aon chatagóirí sa chuid seo",
     "Category not found" : "Níor aimsíodh an chatagóir",
     "The category you are looking for does not exist or has been removed." : "Níl an chatagóir atá á lorg agat ann nó baineadh í.",
     "Back to categories" : "Ar ais chuig na catagóirí",

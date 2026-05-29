@@ -247,7 +247,6 @@ OC.L10N.register(
     "Failed to load bookmarks" : "כשלון בטעינת סימניות",
     "No categories yet" : "ללא קטגוריות עדיין",
     "Categories will appear here once they are created." : "קטגוריות יופיעו כאן ברגע שייוצרו",
-    "No categories in this section" : "אין קטגוריות באיזור הזה",
     "Category not found" : "קטגוריה לא נמצאה",
     "The category you are looking for does not exist or has been removed." : "הקטגוריה שאתם מחפשים לא קיימת או הוסרה.",
     "Back to categories" : "חזרה אל קטגוריות",

@@ -201,7 +201,6 @@ OC.L10N.register(
     "Failed to load bookmarks" : "خەتكۈچلەرنى يۈكلەش مەغلۇپ بولدى",
     "No categories yet" : "ھازىرغىچە تۈر يوق",
     "Categories will appear here once they are created." : "تۈرلەر قۇرۇلغاندىن كېيىن بۇ يەردە كۆرۈنىدۇ.",
-    "No categories in this section" : "بۇ بۆلەكتە كاتېگورىيە يوق",
     "Category not found" : "تۈر تېپىلمىدى",
     "The category you are looking for does not exist or has been removed." : "سىز ئىزدىگەن تۈر مەۋجۇت ئەمەس ياكى ئۆچۈرۈۋېتىلگەن.",
     "Back to categories" : "تۈرلەرگە قايتىش",

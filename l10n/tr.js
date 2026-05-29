@@ -284,7 +284,6 @@ OC.L10N.register(
     "Failed to load bookmarks" : "Yer imleri yüklenemedi",
     "No categories yet" : "Henüz bir bölüm yok",
     "Categories will appear here once they are created." : "Oluşturulmuş bölümler burada görüntülenir.",
-    "No categories in this section" : "Burada bir bölüm yok",
     "Category not found" : "Bölüm bulunamadı",
     "The category you are looking for does not exist or has been removed." : "Aradığınız bölüm bulunamadı ya da silinmiş.",
     "Back to categories" : "Bölümlere dön",
