@@ -86,8 +86,9 @@ OC.L10N.register(
     "Newest first" : "Jaunākie pirms",
     "Oldest first" : "Vecākie pirms",
     "Reset" : "Atiestatīt",
+    "Owner" : "Īpašnieks",
     "Actions" : "Darbības",
     "No teams found" : "Netika atrasta neviena komanda",
-    "Members" : "Biedri"
+    "Members" : "Dalībnieki"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");
