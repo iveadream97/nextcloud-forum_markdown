@@ -38,6 +38,7 @@ OC.L10N.register(
     "Enable" : "SLå på",
     "Disable" : "Slå av",
     "Description" : "Skildring",
+    "Last 7 days" : "Siste 7 dagar",
     "Appearance" : "Utsjånad",
     "Newest first" : "Nyaste fyrst",
     "Oldest first" : "Eldste fyrst",

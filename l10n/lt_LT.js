@@ -115,6 +115,8 @@ OC.L10N.register(
     "Tag" : "Žymė",
     "Description" : "Aprašas",
     "Enabled" : "Įjungta",
+    "Parent" : "Viršesnis",
+    "Enter category name" : "Įvesti kategorijos pavadinimą",
     "Permissions" : "Leidimai",
     "Text color" : "Teksto spalva",
     "Dark text" : "Tamsus tekstas",
