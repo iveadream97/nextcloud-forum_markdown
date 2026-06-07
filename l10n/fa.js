@@ -65,6 +65,7 @@ OC.L10N.register(
     "Draft saved" : "پیش نویس ذخیره شد",
     "Unsaved changes" : "Unsaved changes",
     "Refresh" : "تازه‌سازی",
+    "Back to {name}" : "بازگشت به {name}",
     "Error" : "خطا",
     "Created" : "ایجاد شده",
     "Searching …" : "جستجوکردن …",
