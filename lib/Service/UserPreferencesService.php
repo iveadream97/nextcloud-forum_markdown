@@ -52,7 +52,7 @@ class UserPreferencesService {
 	];
 
 	/** @var array<string> List of valid preference keys */
-	private const VALID_KEYS = [
+	public const VALID_KEYS = [
 		self::PREF_AUTO_SUBSCRIBE_CREATED_THREADS,
 		self::PREF_AUTO_SUBSCRIBE_REPLIED_THREADS,
 		self::PREF_UPLOAD_DIRECTORY,

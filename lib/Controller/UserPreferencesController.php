@@ -73,10 +73,14 @@ class UserPreferencesController extends OCSController {
 				return new DataResponse(['error' => 'User not authenticated'], Http::STATUS_UNAUTHORIZED);
 			}
 
-			// Get preferences directly from request body
-			$preferences = $this->request->getParams();
-			// Remove route-specific params that Nextcloud adds
-			unset($preferences['_route']);
+			// Filter request body to known preference keys only — strips OCS
+			// framework params (_route, format) and derived/read-only fields
+			// like `upload_directory_resolved_path` that the frontend may
+			// round-trip from a previous GET.
+			$preferences = array_intersect_key(
+				$this->request->getParams(),
+				array_flip(UserPreferencesService::VALID_KEYS),
+			);
 
 			$allPreferences = $this->preferencesService->updatePreferences($user->getUID(), $preferences);
 			return new DataResponse($allPreferences);
