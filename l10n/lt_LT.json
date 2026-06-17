@@ -232,7 +232,7 @@
     "Version {index}" : "Versija {index}",
     "Add reaction" : "Pridėti reakciją",
     "React with {emoji}" : "Reaguoti naudojant {emoji}",
-    "You reacted with {emoji}" : "Jūs reagavote su {emoji}",
+    "You reacted with {emoji}" : "Jūs reagavote naudoję {emoji}",
     "_You and %n other reacted with {emoji}_::_You and %n others reacted with {emoji}_" : ["Jūs ir  kitas reagavote naudodami {emoji}","Jūs ir %n kiti reagavote naudodami {emoji}","Jūs ir %n kitų reagavote naudodami {emoji}","Jūs ir %n kitų reagavote naudodami {emoji}"],
     "_%n person reacted with {emoji}_::_%n people reacted with {emoji}_" : ["%n žmogus reagavo naudodamas {emoji}","%n žmonės reagavo naudodami {emoji}","%n žmonių reagavo naudodami {emoji}","%n žmonių reagavo naudodami {emoji}"],
     "Write your reply …" : "Parašyk savo atsakymą …",

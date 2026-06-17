@@ -96,6 +96,7 @@ OC.L10N.register(
     "Tag" : "Tunniste",
     "Description" : "Kuvaus",
     "Enabled" : "Käytössä",
+    "Edit category" : "Muokkaa luokkaa",
     "Permissions" : "Oikeudet",
     "Preview" : "Esikatselu",
     "Attachments" : "Liitteet",
