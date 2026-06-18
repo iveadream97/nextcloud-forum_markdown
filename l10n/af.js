@@ -11,6 +11,7 @@ OC.L10N.register(
     "Collapse" : "Vou In",
     "Log in" : "Teken Aan",
     "Hello world!" : "Hallo wêreld!",
+    "Close" : "Close",
     "Category" : "Kategorie",
     "Account" : "Rekening",
     "Cancel" : "Cancel",

@@ -19,6 +19,8 @@ OC.L10N.register(
     "Retry" : "නැවත උත්සාහ කරන්න",
     "Back" : "ආපසු",
     "Edit" : "සංස්කරණය",
+    "Delete" : "Delete",
+    "Save" : "Save",
     "Current version" : "වත්මන් අනුවාදය",
     "Name" : "නම",
     "Error" : "දෝෂය",

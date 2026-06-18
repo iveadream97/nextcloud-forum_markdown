@@ -15,6 +15,7 @@ OC.L10N.register(
     "Log in" : "Ingresar",
     "Hello world!" : "¡Hola mundo!",
     "Upload failed" : "Falla en la carga",
+    "Close" : "Close",
     "Category" : "Categoría",
     "Account" : "Cuenta",
     "Cancel" : "Cancel",
