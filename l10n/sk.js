@@ -29,6 +29,7 @@ OC.L10N.register(
     "Font size" : "Veľkosť písma",
     "List" : "Zoznam",
     "Insert emoji" : "Vložiť emotikonu",
+    "Upload failed" : "Nahrávanie zlyhalo",
     "Close" : "Zatvoriť",
     "Failed to upload file" : "Chyba pri nahrávaní súboru",
     "Threads" : "Vlákna",

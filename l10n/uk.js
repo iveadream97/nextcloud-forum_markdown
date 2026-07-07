@@ -97,7 +97,7 @@ OC.L10N.register(
     "Enable" : "Увімкнути",
     "Disable" : "Вимкнути",
     "This action cannot be undone." : "Цю дію не можна скасувати.",
-    "Tag" : "Тег",
+    "Tag" : "Мітка",
     "Description" : "Опис",
     "Enabled" : "Увімкнено",
     "Enter category name" : "Введіть назву категорії",
