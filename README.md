@@ -5,7 +5,7 @@ with added Markdown support for post content.
 
 ## Credits
 
-Original author: Chen Asraf ([https://casraf.dev](https://casraf.dev))
+Original author: Chen Asraf ([https://casraf.dev](https://casraf.dev))  
 Original project: https://github.com/chenasraf/nextcloud-forum
 
 ## Changes from upstream
